@@ -1,12 +1,33 @@
 // Key helper function imports for future use.
-import React, { useState, useEffect } from "react";
-// import { Router, Routes, Link, Route } from 'react-router-dom';
-// import { v4 as uuidv4 } from 'uuid';
+import { Container, Grid } from "@mui/material";
+import React from "react";
+import Hero from "./Hero.jsx";
 
 function App() {
-
+  
     return (
-      <div>Hello World</div>
+      <div className="container-sg">
+        <Container maxWidth="lg">
+          <Grid 
+          container
+          direction="column"
+          justify="center"
+          alignItems="center">
+            <Grid item xs={12}>
+              {/* Navbar Component */}
+            </Grid>
+            <Grid item xs={12}>
+              <Hero />
+            </Grid>
+            <Grid item xs={12}>
+              {/* Body Component */}
+            </Grid>
+            <Grid item xs={12}>
+              {/* Footer Component */}
+            </Grid>
+          </Grid>
+        </Container>
+      </div>
     )
 };
 
