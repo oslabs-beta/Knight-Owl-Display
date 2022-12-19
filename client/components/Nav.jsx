@@ -3,8 +3,9 @@ import { v4 as uuidv4 } from 'uuid';
 
 const NavBar = () => {
   return (
-    <div className='NavBar-CE' key={uuidv4()}>
+    <div className='CE-NavBar' key={uuidv4()}>
       <nav>
+        <img className='CE-LogoImage' src='../../docs/assets/KnightOwl.PNG'></img>
         <a>Sign Up</a>
         <a>About The Team</a>
         <a>GitHub</a>
