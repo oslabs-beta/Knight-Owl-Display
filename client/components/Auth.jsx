@@ -31,8 +31,11 @@ const Auth = () => {
     if (displayState === 'signUp') {
       // assumes our backend schema will have a mutation createUser to register new
       // users to db using object type NewUser
+      // attempting to return user id as result of request
       const query = `mutation CreateUser($input: NewUser) {
-        createUser(input: $input)
+        createUser(input: $input) {
+          id
+        }
       }`; 
       const variables = {
         input: {
@@ -42,8 +45,11 @@ const Auth = () => {
     } else {
       // assumes our backend schema will have a query type signIn using
       // object type returningUser
+      // attempting to return user id as result of request
       const query = `query SignIn($input: returningUser) {
-        signIn(input: $input)
+        signIn(input: $input) {
+          id
+        }
       }`
     };
       const variables = {
