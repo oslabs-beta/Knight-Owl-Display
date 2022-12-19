@@ -2,7 +2,7 @@ import React from 'react';
 // import { v4 as uuidv4 } from 'uuid';
 import { AppBar, Button, IconButton, Stack,  Toolbar, Typography } from '@mui/material';
 import GitHubIcon from '@mui/icons-material/GitHub';
-// import LoginIcon from '@mui/icons-material/Login';
+import owlLogo from '../../docs/assets/KnightOwl.png';
 
 
 const NavBar = () => {
@@ -10,7 +10,7 @@ const NavBar = () => {
     <AppBar>
       <Toolbar>
         <IconButton>
-          <img className='CE-LogoImage' src='../../docs/assets/KnightOwl.PNG'/>
+          <img className='CE-LogoImage' src={owlLogo}/>
         </IconButton>
         <Typography variant='h6' component='div' sx={{flexGrow: 1}}>
           KNIGHT OWL
