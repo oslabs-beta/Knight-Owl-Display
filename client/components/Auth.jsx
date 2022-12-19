@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
+import { Button, Dialog } from '@mui/material';
 
-const Auth = () => {
+// rendered by NavBar when Sign In clicked
+const Auth = (props) => {
   // use the useState hook to manage state for whether the user is looking at login/auth fields and conditionally render accordingly
-  const [displayState, toggleDisplay] = useState('none') // possible values: 'none', 'logIn', 'signUp'
+  const [displayState, toggleDisplay] = useState('logIn') // possible values: 'logIn', 'signUp'
 
   // use the useState hook to track user entry into login/signup fields
   const [fieldEntries, updateField] = useState({
@@ -28,16 +30,17 @@ const Auth = () => {
     // send sa mutation request to graphql endpoint on backend
 
     // check if state is current login or signup so that the mutation can be shaped accordingly
+    let query, variables;
     if (displayState === 'signUp') {
       // assumes our backend schema will have a mutation createUser to register new
       // users to db using object type NewUser
       // attempting to return user id as result of request
-      const query = `mutation CreateUser($input: NewUser) {
+      query = `mutation CreateUser($input: NewUser) {
         createUser(input: $input) {
           id
         }
       }`; 
-      const variables = {
+      variables = {
         input: {
           ...fieldEntries,
         }
@@ -46,13 +49,13 @@ const Auth = () => {
       // assumes our backend schema will have a query type signIn using
       // object type returningUser
       // attempting to return user id as result of request
-      const query = `query SignIn($input: returningUser) {
+      query = `query SignIn($input: ReturningUser) {
         signIn(input: $input) {
           id
         }
       }`
     };
-      const variables = {
+      variables = {
         input: {
           email: fieldEntries.email,
           password: fieldEntries.password
@@ -61,7 +64,9 @@ const Auth = () => {
 
     fetch('/graphQL', {
       method: 'POST',
-      headers: 'application/json',
+      headers: {
+        'content-type': 'application/json'
+      },
       body: JSON.stringify({
         query,
         variables
@@ -69,12 +74,34 @@ const Auth = () => {
     })
   }
 
+  // Renders either login or signup field depending on current state
 
   return (
-    <div className='ON-Auth' key={uuidv4()}>
-      {/* render buttons to click on that will change state to show login/signup fields */}
-
-      {/* if login or signup display states are true, render relevant form */}
+    <div className='ON-Auth'>
+      <Button onClick={() => toggleDisplay('logIn')}>Sign In</Button>
+      <Button onClick={() => toggleDisplay('signUp')}>Create New Account</Button>
+      <button onClick={()=>props.toggleAuth(false)}>X</button>
+      {(displayState === 'logIn')
+      ?
+        <form className='ON-log-in-form'>
+          <input type='text' id='email' placeholder='Email Address'></input>
+          <br />
+          <input type='text' id='password' placeholder='Password'></input>
+          <br />
+          <Button onClick={sendForms}>Sign In</Button>
+        </form>
+      :
+        <form className='ON-sign-up-form'>
+          <input type='text' id='email' placeholder='Email Address'></input>
+          <br />
+          <input type='text' id='organization' placeholder='Organization'></input>
+          <br />
+          <input type='text' id='password' placeholder='Password'></input>
+          <br />
+          <input type='text' id='confirm-password' placeholder='Confirm Password'></input>
+          <br />
+          <Button onClick={sendForms}>Sign Up</Button>
+          </form>}
     </div>
   )
 }
