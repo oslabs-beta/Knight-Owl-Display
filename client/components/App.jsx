@@ -2,6 +2,7 @@
 import { Container, Grid } from "@mui/material";
 import React from "react";
 import Hero from "./Hero.jsx";
+import NavBar from "./Nav.jsx";
 
 function App() {
   
@@ -14,7 +15,7 @@ function App() {
           justify="center"
           alignItems="center">
             <Grid item xs={12}>
-              {/* Navbar Component */}
+              <NavBar/>
             </Grid>
             <Grid item xs={12}>
               <Hero />
