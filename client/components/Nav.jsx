@@ -10,7 +10,7 @@ const NavBar = () => {
     <AppBar>
       <Toolbar>
         <IconButton>
-          <img className='CE-LogoImage' src={owlLogo}/>
+          <img className='CE-LogoImage' src={owlLogo} width='75' height='75'/>
         </IconButton>
         <Typography variant='h6' component='div' sx={{flexGrow: 1}}>
           KNIGHT OWL
