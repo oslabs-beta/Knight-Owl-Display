@@ -1,5 +1,6 @@
 const path = require("path");
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const Dotenv = require('dotenv-webpack')
 
 module.exports = {
     entry: "/client/index.js",
@@ -8,11 +9,11 @@ module.exports = {
         filename: 'bundle.js',
     },
     devServer: {
-        static: 
-            {
-                directory: path.join(__dirname, 'client'),
-                publicPath: '/'
-            },
+        static:
+        {
+            directory: path.join(__dirname, 'client'),
+            publicPath: '/'
+        },
         proxy: {
             '/': 'http://localhost:3000'
         },
@@ -24,7 +25,7 @@ module.exports = {
                 test: /\.jsx?/,
                 exclude: /(node_modules)/,
                 use: {
-                loader: 'babel-loader',
+                    loader: 'babel-loader',
                     options: {
                         presets: ['@babel/preset-env', '@babel/preset-react'],
                     }
@@ -47,6 +48,9 @@ module.exports = {
     plugins: [
         new HtmlWebpackPlugin({
             template: 'index.html'
+        }),
+        new Dotenv({
+            systemvars: true,
         }),
     ],
 };
