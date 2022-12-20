@@ -18,28 +18,24 @@ export default function Team() {
         <div className='team-sg'>
           <img src={caitlinHeadshot} className="team-headshot"/>
           <h2 className='team-name-sg'>Caitlin Ervine</h2>
-          <p className='team-bio-sg'>Insert bio here.</p>
         </div>
         </Grid>
         <Grid item xs={6}>
         <div className='team-sg'>
           <img src={jacksonHeadshot} className="team-headshot"/>
           <h2 className='team-name-sg'>Jackson Kalmbach</h2>
-          <p className='team-bio-sg'>Insert bio here.</p>
         </div>
         </Grid>
         <Grid item xs={6}>
         <div className='team-sg'>
           <img src={onaHeadshot} className="team-headshot"/>
           <h2 className='team-name-sg'>Ona Narbutas</h2>
-          <p className='team-bio-sg'>Insert bio here.</p>
         </div>
         </Grid>
         <Grid item xs={6}>
         <div className='team-sg'>
           <img src={simonHeadshot} className="team-headshot"/>
           <h2 className='team-name-sg'>Simon Grigenas</h2>
-          <p className='team-bio-sg'>Insert bio here.</p>
         </div>
         </Grid>
       </Grid>
