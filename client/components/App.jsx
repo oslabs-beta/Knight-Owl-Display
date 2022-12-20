@@ -9,6 +9,7 @@ import Hero from "./Hero.jsx";
 import NavBar from "./Nav.jsx";
 import Problem from "./Problem.jsx";
 import Team from "./Team.jsx";
+import TechStack from "./TechStack.jsx";
 
 function App() {
   
@@ -29,6 +30,8 @@ function App() {
               <Features/>
             </Grid>
             <Grid item xs={12}>
+              <div className="techstack-header-sg">Knight Owl Tech Stack</div>
+              <TechStack/>
               <Team/>
             </Grid>
             <Grid item xs={12}>
