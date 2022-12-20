@@ -34,7 +34,13 @@ const NavBar = () => {
       </AppBar>
       {/* Render Auth component when Sign In clicked */}
       {open && 
-      <Dialog open={open}>
+      <Dialog 
+        open={open}
+        onClose={(event, reason) => {
+          if (reason === 'backdropClick' || reason === 'escapeKeyDown') {
+            return toggleAuth(false);
+          }
+        }}>
         <Auth toggleAuth={toggleAuth}/>
       </Dialog>}
     </>

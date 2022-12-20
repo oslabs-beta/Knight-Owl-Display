@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
-import { Button, Dialog } from '@mui/material';
+import { Button, Dialog, DialogActions, DialogContent, DialogContentText, TextField } from '@mui/material';
 
 // rendered by NavBar when Sign In clicked
 const Auth = (props) => {
@@ -80,27 +80,35 @@ const Auth = (props) => {
     <div className='ON-Auth'>
       <Button onClick={() => toggleDisplay('logIn')}>Sign In</Button>
       <Button onClick={() => toggleDisplay('signUp')}>Create New Account</Button>
-      <button onClick={()=>props.toggleAuth(false)}>X</button>
+      <br/>
       {(displayState === 'logIn')
       ?
         <form className='ON-log-in-form'>
-          <input type='text' id='email' placeholder='Email Address'></input>
-          <br />
-          <input type='text' id='password' placeholder='Password'></input>
-          <br />
-          <Button onClick={sendForms}>Sign In</Button>
+          <DialogContent>
+            <TextField type='text' id='email' placeholder='Email Address'></TextField>
+            <br />
+            <TextField type='text' id='password' placeholder='Password'></TextField>
+            <br />
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={sendForms}>Sign In</Button>
+          </DialogActions>
         </form>
       :
         <form className='ON-sign-up-form'>
-          <input type='text' id='email' placeholder='Email Address'></input>
-          <br />
-          <input type='text' id='organization' placeholder='Organization'></input>
-          <br />
-          <input type='text' id='password' placeholder='Password'></input>
-          <br />
-          <input type='text' id='confirm-password' placeholder='Confirm Password'></input>
-          <br />
-          <Button onClick={sendForms}>Sign Up</Button>
+          <DialogContent>
+            <TextField type='text' id='email' placeholder='Email Address'></TextField>
+            <br />
+            <TextField type='text' id='organization' placeholder='Organization'></TextField>
+            <br />
+            <TextField type='text' id='password' placeholder='Password'></TextField>
+            <br />
+            <TextField type='text' id='confirm-password' placeholder='Confirm Password'></TextField>
+            <br />
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={sendForms}>Sign Up</Button>
+          </DialogActions>
           </form>}
     </div>
   )
