@@ -1,21 +1,23 @@
 const express = require('express');
 const path = require('path');
-const mongoose = require('mongoose');
 const app = express();
+const testController = require('./controllers/testController.js');
 
 // Automatically parse urlencoded body content and form data from incoming requests and place it in req.body
 app.use(express.json());
 app.use(express.urlencoded());
 
+
+
 app.use('/build', express.static(path.join(__dirname, '../build')));
 
 // Root
 app.get('/', (req, res) => {
-    return res.status(200).sendFile(path.join(__dirname, '../index.html'));
+  return res.status(200).sendFile(path.join(__dirname, '../index.html'));
 });
 
 // 404 Handler
-app.use('*', (req,res) => {
+app.use('*', (req, res) => {
   res.status(404).send('404 Error: Page Not Found');
 });
 
