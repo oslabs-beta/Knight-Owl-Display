@@ -9,10 +9,10 @@ const Auth = (props) => {
 
   // use the useState hook to track user entry into login/signup fields
   const [fieldEntries, updateField] = useState({
-    email: null,
-    password: null,
-    confirmPassword: null,
-    organization: null,
+    email: '',
+    password: '',
+    confirmPassword: '',
+    organization: '',
   })
 
   // declare function to update fieldEntries state per user input in text fields
@@ -20,7 +20,8 @@ const Auth = (props) => {
     const fieldToUpdate = target.id;
     const passInUpdate = {...fieldEntries};
 
-    passInUpdate[fieldToUpdate] = target.id.value;
+
+    passInUpdate[fieldToUpdate] = target.value;
     updateField(passInUpdate);
   }
 
@@ -85,9 +86,9 @@ const Auth = (props) => {
       ?
         <form className='ON-log-in-form'>
           <DialogContent>
-            <TextField type='text' id='email' placeholder='Email Address'></TextField>
+            <TextField type='text' id='email' placeholder='Email Address' onChange={(e) => trackInputToState(e.target)}></TextField>
             <br />
-            <TextField type='text' id='password' placeholder='Password'></TextField>
+            <TextField type='text' id='password' placeholder='Password' onChange={(e) => trackInputToState(e.target)}></TextField>
             <br />
           </DialogContent>
           <DialogActions>
@@ -97,13 +98,13 @@ const Auth = (props) => {
       :
         <form className='ON-sign-up-form'>
           <DialogContent>
-            <TextField type='text' id='email' placeholder='Email Address'></TextField>
+            <TextField type='text' id='email' placeholder='Email Address' onChange={(e) => trackInputToState(e.target)}></TextField>
             <br />
-            <TextField type='text' id='organization' placeholder='Organization'></TextField>
+            <TextField type='text' id='password' placeholder='Password' onChange={(e) => trackInputToState(e.target)}></TextField>
             <br />
-            <TextField type='text' id='password' placeholder='Password'></TextField>
+            <TextField type='text' id='confirm-password' placeholder='Confirm Password' onChange={(e) => trackInputToState(e.target)}></TextField>
             <br />
-            <TextField type='text' id='confirm-password' placeholder='Confirm Password'></TextField>
+            <TextField type='text' id='organization' placeholder='Organization' onChange={(e) => trackInputToState(e.target)}></TextField>
             <br />
           </DialogContent>
           <DialogActions>
