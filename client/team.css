@@ -1,0 +1,10 @@
+.team-headshot {
+    max-width: 15rem;
+    max-height: 15rem;
+}
+
+.team-sg {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}

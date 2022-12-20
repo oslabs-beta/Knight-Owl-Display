@@ -1,5 +1,4 @@
 import React from 'react';
-// import { v4 as uuidv4 } from 'uuid';
 import { AppBar, Button, IconButton, Stack,  Toolbar, Typography } from '@mui/material';
 import GitHubIcon from '@mui/icons-material/GitHub';
 import owlLogo from '../../docs/assets/KnightOwl.png';

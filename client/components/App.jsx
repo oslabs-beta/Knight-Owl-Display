@@ -9,7 +9,6 @@ import Hero from "./Hero.jsx";
 import NavBar from "./Nav.jsx";
 import Problem from "./Problem.jsx";
 import Team from "./Team.jsx";
-import CodingPlayground from "./CodingPlayground.jsx";
 
 function App() {
   
@@ -28,9 +27,6 @@ function App() {
               <Hero/>
               <Problem/>
               <Features/>
-            </Grid>
-            <Grid item xs={12}>
-              <CodingPlayground/>
             </Grid>
             <Grid item xs={12}>
               <Team/>
