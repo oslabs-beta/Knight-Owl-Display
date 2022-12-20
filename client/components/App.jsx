@@ -1,8 +1,14 @@
 // Key helper function imports for future use.
 import { Container, Grid } from "@mui/material";
 import React from "react";
+import '../app.css';
+
+// Component imports
+import Features from "./Features.jsx";
 import Hero from "./Hero.jsx";
 import NavBar from "./Nav.jsx";
+import Problem from "./Problem.jsx";
+import Team from "./Team.jsx";
 
 function App() {
   
@@ -18,13 +24,15 @@ function App() {
               <NavBar/>
             </Grid>
             <Grid item xs={12}>
-              <Hero />
+              <Hero/>
+              <Problem/>
+              <Features/>
             </Grid>
             <Grid item xs={12}>
-              {/* Body Component */}
+              <Team/>
             </Grid>
             <Grid item xs={12}>
-              {/* Footer Component */}
+              <NavBar/>
             </Grid>
           </Grid>
         </Container>
