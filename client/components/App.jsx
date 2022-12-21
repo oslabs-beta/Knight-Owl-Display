@@ -2,6 +2,7 @@
 import { Container, Grid } from "@mui/material";
 import React from "react";
 import '../app.css';
+import '../hero.css';
 
 // Component imports
 import Features from "./Features.jsx";
@@ -10,6 +11,7 @@ import NavBar from "./Nav.jsx";
 import Problem from "./Problem.jsx";
 import Team from "./Team.jsx";
 import TechStack from "./TechStack.jsx";
+import Dashboard from "./Dashbord.jsx";
 
 function App() {
   
@@ -39,6 +41,8 @@ function App() {
             </Grid>
           </Grid>
         </Container>
+        {/* Uncomment out the dashboard container below to add React components within it and have it rendered on the landing page. */}
+        {/* <Dashboard/> */}
       </div>
     )
 };
