@@ -1,12 +1,17 @@
 const express = require('express');
 const path = require('path');
 const app = express();
-const testController = require('./controllers/testController.js');
+const { graphqlHTTP } = require('express-graphql');
+
+const { schema } = require('./api/schema.js')
+
+// ATTN - testController commented out until db is spun up and can be connected to
+// const testController = require('./controllers/testController.js');
+
 
 // Automatically parse urlencoded body content and form data from incoming requests and place it in req.body
 app.use(express.json());
 app.use(express.urlencoded());
-
 
 
 app.use('/build', express.static(path.join(__dirname, '../build')));
@@ -15,6 +20,12 @@ app.use('/build', express.static(path.join(__dirname, '../build')));
 app.get('/', (req, res) => {
   return res.status(200).sendFile(path.join(__dirname, '../index.html'));
 });
+
+// GraphQL endpoint
+app.use('/graphql', graphqlHTTP({
+  schema,
+  graphiql: true,
+}));
 
 // 404 Handler
 app.use('*', (req, res) => {
