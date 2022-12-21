@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import { AppBar, Button, IconButton, Stack,  Toolbar, Typography, Dialog } from '@mui/material';
+import { AppBar, Button, IconButton, Stack,  Toolbar, Typography, Dialog, SvgIcon } from '@mui/material';
 import GitHubIcon from '@mui/icons-material/GitHub';
 import owlLogo from '../../docs/assets/KnightOwl.png';
+import npmLogo from '../../docs/assets/npmLogo2.png';
 
 import Auth from './Auth.jsx';
 
@@ -23,7 +24,9 @@ const NavBar = () => {
           <Stack direction='row' spacing={2}>
             <Button color='inherit' onClick={()=>toggleAuth(true)}>Sign In</Button>
             <Button color='inherit'>About The Team</Button>
-            <Button color='inherit'>NPM</Button>
+            <IconButton>
+            <img className='CE-LogoImage' src={npmLogo} width='50' height='50'/>
+            </IconButton>
             <IconButton>
               <GitHubIcon/>
             </IconButton>
