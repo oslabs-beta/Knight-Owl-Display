@@ -69,6 +69,7 @@ const OrganizationType = new GraphQLObjectType({
   description: 'An organization to which a KnightOwl user belongs',
   fields: () => ({
     id: { type: GraphQLID },
+    name: { type: GraphQLString },
     users: { type: new GraphQLList(UserType)},
     badQueries: { 
       type: new GraphQLList(BadQueryType),
@@ -133,6 +134,16 @@ const RootQueryType = new GraphQLObjectType({
           }
         }
         return 'Email or password incorrect.'
+      }
+    },
+    userQueries: {
+      type: new GraphQLList(BadQueryType),
+      description: 'Retrieves a list of queries associated with the user that have been rejected by KnightOwl middleware',
+      args: {
+        id: { type: GraphQLID },
+      },
+      resolve: (parent, args) => {
+
       }
     }
   })
