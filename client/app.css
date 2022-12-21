@@ -6,16 +6,6 @@ html {
     scroll-behavior: smooth;
 }
 
-.hero-sg {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-.hero-logo-sg {
-    max-width: 15rem;
-}
-
 .team-headshot {
     max-width: 15rem;
     max-height: 15rem;
