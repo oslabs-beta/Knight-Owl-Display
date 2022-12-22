@@ -9,6 +9,10 @@ const {
   GraphQLScalarType
 } = require ('graphql');
 
+
+const bcrypt = require('bcrypt');
+const saltRounds = 10;
+
 // hardcoding data for test purposes
 let newUserId = 1;
 const users = [
@@ -95,7 +99,7 @@ const UserType = new GraphQLObjectType({
   fields: () => ({
     id: { type: new GraphQLNonNull(GraphQLID) },
     email: { type: new GraphQLNonNull(GraphQLString)},
-    organization: { type: OrganizationType},
+    organization: { type: new GraphQLNonNull(GraphQLString)},
     password: { type: new GraphQLNonNull(GraphQLString)},
   })
 });
@@ -109,21 +113,21 @@ const MiddlewareType = new GraphQLObjectType({
   })
 })
 
-const OrganizationType = new GraphQLObjectType({
-  name: 'Organization',
-  description: 'An organization to which a KnightOwl user belongs',
-  fields: () => ({
-    id: { type: GraphQLID },
-    name: { type: GraphQLString },
-    users: { type: new GraphQLList(UserType)},
-    badQueries: { 
-      type: new GraphQLList(BadQueryType),
-      resolve: (organization) => {
-        return badQueries.filter(query => query.organizationID === organization.id);
-      }
-    },
-  })
-})
+// const OrganizationType = new GraphQLObjectType({
+//   name: 'Organization',
+//   description: 'An organization to which a KnightOwl user belongs',
+//   fields: () => ({
+//     id: { type: GraphQLID },
+//     name: { type: GraphQLString },
+//     users: { type: new GraphQLList(UserType)},
+//     badQueries: { 
+//       type: new GraphQLList(BadQueryType),
+//       resolve: (organization) => {
+//         return badQueries.filter(query => query.organizationID === organization.id);
+//       }
+//     },
+//   })
+// })
 
 const BadQueryType = new GraphQLObjectType({
   name: 'BadQuery',
@@ -140,7 +144,7 @@ const BadQueryType = new GraphQLObjectType({
     },
     rejectedOn: { type: GraphQLString },
     // we should decide whether to tie query collections to user or organization
-    organizationID: { type: GraphQLID },
+    organization: { type: GraphQLString },
     userID: { type: GraphQLID },
   })
 })
@@ -222,23 +226,35 @@ const RootMutationType = new GraphQLObjectType({
         password: { type: GraphQLString },
         organization: { type: GraphQLString },
       },
-      resolve: (parent, args) => {
+      resolve: async (parent, args) => {
         // check to make sure no other users registered to same email
         for (const user of users) {
           if (user.email === args.email) {
             return "User with this email already exists."
           }
         }
-        // create new user object in users array with id
-        const newUser = {
+        // hash password befo re saving
+        const {password} = args;
+        console.log('args: ', args)
+        console.log('password: ', password)
+        console.log('salt: ', saltRounds)
+        const result = await bcrypt.hash(password, saltRounds).then(function(hash) {
+         // create new user object in users array with id
+         console.log('hash: ', hash)
+         const newUser = {
           id: `user${newUserId++}`,
           email: args.email,
-          password: args.password,
+          password: hash,
+          // password: args.password,
           organization: args.organization
-        };
-        users.push(newUser);
-        // return id
-        return newUser.id;
+         };
+         console.log('user: ', newUser)
+         users.push(newUser);
+         // return id
+         return newUser.id;
+
+       })
+       return result;
       }
     },
     saveQuery: {
