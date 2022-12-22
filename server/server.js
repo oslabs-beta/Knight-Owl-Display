@@ -2,9 +2,9 @@ const express = require('express');
 const path = require('path');
 const app = express();
 const { graphqlHTTP } = require('express-graphql');
+const { knightOwl } = require('knightowl')
 
 const { schema } = require('./api/schema.js')
-
 // ATTN - testController commented out until db is spun up and can be connected to
 // const testController = require('./controllers/testController.js');
 
@@ -22,9 +22,10 @@ app.get('/', (req, res) => {
 });
 
 // GraphQL endpoint
-app.use('/graphql', graphqlHTTP({
+app.use('/graphql', knightOwl.costLimiter, knightOwl.rateLimiter, graphqlHTTP({
   schema,
   graphiql: true,
+  validationRules: [knightOwl.depthLimit(20)]
 }));
 
 // 404 Handler
