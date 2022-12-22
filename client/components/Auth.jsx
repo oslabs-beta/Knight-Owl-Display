@@ -36,32 +36,28 @@ const Auth = (props) => {
       // assumes our backend schema will have a mutation createUser to register new
       // users to db using object type NewUser
       // attempting to return user id as result of request
-      query = `mutation CreateUser($input: NewUser) {
-        createUser(input: $input) {
-          id
-        }
+      query = `mutation CreateUser($email: String, $password: String, $organization: String) {
+        createUser(email: $email, password: $password, organization: $organization)
       }`; 
+
       variables = {
-        input: {
-          ...fieldEntries,
-        }
+        email: fieldEntries.email,
+        password: fieldEntries.password,
+        organization: fieldEntries.organization,
       }
+      console.log('variables: ', variables)
     } else {
       // assumes our backend schema will have a query type signIn using
       // object type returningUser
       // attempting to return user id as result of request
-      query = `query SignIn($input: ReturningUser) {
-        signIn(input: $input) {
-          id
-        }
+      query = `query SignIn($email: String, $password: String) {
+        signIn(email: $email, password: $password)
       }`
-    };
       variables = {
-        input: {
-          email: fieldEntries.email,
-          password: fieldEntries.password
-        }
+        email: fieldEntries.email,
+        password: fieldEntries.password,
       }
+    };
 
     fetch('/graphQL', {
       method: 'POST',
@@ -73,6 +69,8 @@ const Auth = (props) => {
         variables
       }),
     })
+    .then(data => data.json())
+    .then(response => console.log(response))
   }
 
   // Renders either login or signup field depending on current state
