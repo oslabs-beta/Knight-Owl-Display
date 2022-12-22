@@ -5,13 +5,12 @@ const {
   GraphQLList,
   GraphQLInt,
   GraphQLID,
-  GraphQLNonNull
+  GraphQLNonNull,
+  GraphQLScalarType
 } = require ('graphql');
 
-const util = require('util')
-
-let newUserId = 1;
 // hardcoding data for test purposes
+let newUserId = 1;
 const users = [
   {
     id: 'ona',
@@ -39,8 +38,55 @@ const users = [
   },
 ]
 
+let newQueryID = 5;
 const badQueries = [
+  {
+    id: '1',
+    querierIPAddress: '0:0:0:1',
+    queryString: 'Give me money',
+    rejectedBy: 'depthLimiter',
+    rejectedOn: 'Dec. 21 2022 9:35:00',
+    userID: 'ona'
+  },
+  {
+    id: '2',
+    querierIPAddress: '0:0:2:1',
+    queryString: 'Sneaky API schema reveal',
+    rejectedBy: 'costLimiter',
+    rejectedOn: 'Dec. 21 2022 9:35:22',
+    userID: 'caitlin',
+  },
+  {
+    id: '3',
+    querierIPAddress: '0:9:0:1',
+    queryString: 'hihihihihihihihi',
+    rejectedBy: 'rateLimiter',
+    rejectedOn: 'Dec. 21 2022 9:45:50',
+    userID: 'jackson'
+  },
+  {
+    id: '4',
+    querierIPAddress: '0:0:0:1',
+    queryString: 'oh no a malicious query D:',
+    rejectedBy: 'depthLimiter',
+    rejectedOn: 'Dec. 21 2022 9:35:00',
+    userID: 'simon'
+  },
+]
 
+const middlewareFunctions = [
+  {
+    id: 1,
+    name: 'costLimiter',
+  },
+  {
+    id: 2,
+    name: 'rateLimiter',
+  },
+  {
+    id: 3,
+    name: 'depthLimiter',
+  }
 ]
 
 const UserType = new GraphQLObjectType({
@@ -60,7 +106,6 @@ const MiddlewareType = new GraphQLObjectType({
   fields: () => ({
     id: { type: GraphQLID },
     name: { type: GraphQLString },
-    caughtQueries: { type: new GraphQLList(BadQueryType)},
   })
 })
 
@@ -87,7 +132,12 @@ const BadQueryType = new GraphQLObjectType({
     id: { type: GraphQLID },
     querierIPAddress: { type: GraphQLString},
     queryString: { type: GraphQLString },
-    rejectedBy: { type: MiddlewareType},
+    rejectedBy: { 
+      type: MiddlewareType,
+      resolve: (badQuery, args) => {
+        return middlewareFunctions.find(func => func.name === badQuery.rejectedBy);
+      }
+    },
     rejectedOn: { type: GraphQLString },
     // we should decide whether to tie query collections to user or organization
     organizationID: { type: GraphQLID },
@@ -143,7 +193,18 @@ const RootQueryType = new GraphQLObjectType({
         id: { type: GraphQLID },
       },
       resolve: (parent, args) => {
-
+        return badQueries.filter(query => query.userID === args.id);
+      }
+    },
+    middlewareQueries: {
+      type: new GraphQLList(BadQueryType),
+      description: 'Retrieves a list of queries rejected by a given Knight Owl middleware function and associated with current user',
+      args: {
+        userID: { type: GraphQLID },
+        middlewareFunc: { type: GraphQLString }
+      },  
+      resolve: (parent, args) => {
+        return badQueries.filter(badQuery => badQuery.rejectedBy === args.middlewareFunc && badQuery.userID === args.userID)
       }
     }
   })
@@ -178,6 +239,29 @@ const RootMutationType = new GraphQLObjectType({
         users.push(newUser);
         // return id
         return newUser.id;
+      }
+    },
+    saveQuery: {
+      type: BadQueryType,
+      description: 'Stores a rejected query in database so user can see metrics on query rejections from client',
+      args: {
+        userID: { type: GraphQLID },
+        querierIPAddress: { type: GraphQLString },
+        queryString: { type: GraphQLString },
+        rejectedBy: { type: GraphQLString },
+        rejectedOn: { type: GraphQLString },
+      },
+      resolve: (parent, args) => {
+        const newQuery = {
+          id: `${newQueryID++}`,
+          userID: args.userID,
+          querierIPAddress: args.querierIPAddress,
+          queryString: args.queryString,
+          rejectedBy: args.rejectedBy,
+          rejectedOn: args.rejectedOn,
+        };
+        badQueries.push(newQuery);
+        return newQuery;
       }
     }
   })
