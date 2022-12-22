@@ -46,7 +46,7 @@ function App() {
           </Grid>
         </Container>
         {/* Uncomment out the dashboard container below to add React components within it and have it rendered on the landing page. */}
-        {/* <Dashboard/> */}
+        <Dashboard/>
       </div>
     )
 };
