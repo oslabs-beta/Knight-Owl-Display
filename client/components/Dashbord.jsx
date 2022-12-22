@@ -1,6 +1,5 @@
 import React from 'react';
 import { Grid } from "@mui/material";
-import '../dashboard.css';
 
 export default function Dashboard() {
   return (

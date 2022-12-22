@@ -1,0 +1,49 @@
+@import url('https://fonts.googleapis.com/css2?family=Merriweather:wght@300;400;700&display=swap');
+
+.hero-sg {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    font-family: 'Merriweather', 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+
+.hero-logo-sg {
+    max-width: 15rem;
+}
+
+.hero-tagline-sg {
+  font-size: 3.5rem;
+  text-align: center;
+}
+
+.hero-tagline-desc-sg {
+  text-align: center;
+  font-size: 1.2rem;
+  color: #262626;
+}
+
+
+.hero-install-sg {
+    background-color: #d6b8b7;
+    min-width: 50vh;
+    min-height: 5vh;
+    border-radius: 5px;
+    text-align: center;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.hero-npm-sg {
+  font-size: 1.5rem;
+  color: #262626;
+  margin-left: 1.5rem;
+}
+
+.hero-npm-paste {
+  margin-right: 10px;
+}
