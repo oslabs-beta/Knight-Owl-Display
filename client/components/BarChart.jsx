@@ -17,7 +17,7 @@ function BarChart() {
 
   return (
     <div>
-      <Bar data={state} className='bar-chart'/>
+      <Bar data={state} className='chart'/>
     </div>
 
   )
