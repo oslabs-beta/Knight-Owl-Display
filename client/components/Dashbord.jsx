@@ -1,6 +1,7 @@
 import React from 'react';
 import { Grid } from "@mui/material";
 import '../dashboard.css';
+import BarChart from './BarChart.jsx';
 
 export default function Dashboard() {
   return (
@@ -13,15 +14,14 @@ export default function Dashboard() {
         alignItems="center">
           <Grid item xs={3}>
             {/* Insert dashboard component here */}
-            <h1>Hi</h1>
+            <BarChart />
+          </Grid>
+          <Grid item xs={3}>
+             <BarChart />
           </Grid>
           <Grid item xs={3}>
              {/* Insert dashboard component here */}
-             <h1>I'm</h1>
-          </Grid>
-          <Grid item xs={3}>
-             {/* Insert dashboard component here */}
-             <h1>Jackon</h1>
+             <BarChart />
           </Grid>
       </Grid>
       </Grid>

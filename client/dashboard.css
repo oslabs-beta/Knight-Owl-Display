@@ -4,3 +4,9 @@
   background-color: white;
   border-radius: 20px;
 }
+
+.bar-chart {
+  border: 1px solid lightgray;
+  border-radius: 10px;
+  margin: 15px;
+}
