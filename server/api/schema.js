@@ -15,86 +15,6 @@ const saltRounds = 10;
 
 const db = require ('../models/database.js');
 
-// hardcoding data for test purposes
-let newUserId = 1;
-const users = [
-  {
-    id: 'ona',
-    email: 'ona@codesmith.com',
-    organization: 'KnightOwl',
-    password: 'hoothoot',
-  },
-  {
-    id: 'jackson',
-    email: 'jackson@codesmith.com',
-    organization: 'KnightOwl',
-    password: 'hoothoot',
-  },
-  {
-    id: 'simon',
-    email: 'simon@codesmith.com',
-    organization: 'KnightOwl',
-    password: 'hoothoot',
-  },
-  {
-    id: 'caitlin',
-    email: 'caitlin@codesmith.com',
-    organization: 'KnightOwl',
-    password: 'hoothoot',
-  },
-]
-
-let newQueryID = 5;
-const badQueries = [
-  {
-    id: '1',
-    querierIPAddress: '0:0:0:1',
-    queryString: 'Give me money',
-    rejectedBy: 'depthLimiter',
-    rejectedOn: 'Dec. 21 2022 9:35:00',
-    userID: 'ona'
-  },
-  {
-    id: '2',
-    querierIPAddress: '0:0:2:1',
-    queryString: 'Sneaky API schema reveal',
-    rejectedBy: 'costLimiter',
-    rejectedOn: 'Dec. 21 2022 9:35:22',
-    userID: 'caitlin',
-  },
-  {
-    id: '3',
-    querierIPAddress: '0:9:0:1',
-    queryString: 'hihihihihihihihi',
-    rejectedBy: 'rateLimiter',
-    rejectedOn: 'Dec. 21 2022 9:45:50',
-    userID: 'jackson'
-  },
-  {
-    id: '4',
-    querierIPAddress: '0:0:0:1',
-    queryString: 'oh no a malicious query D:',
-    rejectedBy: 'depthLimiter',
-    rejectedOn: 'Dec. 21 2022 9:35:00',
-    userID: 'simon'
-  },
-]
-
-const middlewareFunctions = [
-  {
-    id: 1,
-    name: 'costLimiter',
-  },
-  {
-    id: 2,
-    name: 'rateLimiter',
-  },
-  {
-    id: 3,
-    name: 'depthLimiter',
-  }
-]
-
 const UserType = new GraphQLObjectType({
   name: 'User',
   description: 'A KnightOwl user',
@@ -115,39 +35,16 @@ const MiddlewareType = new GraphQLObjectType({
   })
 })
 
-// const OrganizationType = new GraphQLObjectType({
-//   name: 'Organization',
-//   description: 'An organization to which a KnightOwl user belongs',
-//   fields: () => ({
-//     id: { type: GraphQLID },
-//     name: { type: GraphQLString },
-//     users: { type: new GraphQLList(UserType)},
-//     badQueries: { 
-//       type: new GraphQLList(BadQueryType),
-//       resolve: (organization) => {
-//         return badQueries.filter(query => query.organizationID === organization.id);
-//       }
-//     },
-//   })
-// })
-
 const BadQueryType = new GraphQLObjectType({
   name: 'BadQuery',
   description: 'A query that has been rejected by KnightOwl middleware',
   fields: () => ({
-    id: { type: GraphQLID },
-    querierIPAddress: { type: GraphQLString},
-    queryString: { type: GraphQLString },
-    rejectedBy: { 
-      type: MiddlewareType,
-      resolve: (badQuery, args) => {
-        return middlewareFunctions.find(func => func.name === badQuery.rejectedBy);
-      }
-    },
-    rejectedOn: { type: GraphQLString },
-    // we should decide whether to tie query collections to user or organization
-    organization: { type: GraphQLString },
-    userID: { type: GraphQLID },
+    query_id: { type: GraphQLID },
+    querier_ip_address: { type: GraphQLString},
+    query_string: { type: GraphQLString },
+    rejected_by: { type: GraphQLString },
+    rejected_on: { type: GraphQLString },
+    user_id: { type: GraphQLID },
   })
 })
 
@@ -155,25 +52,7 @@ const RootQueryType = new GraphQLObjectType({
   name: 'Query',
   description: 'Root Query',
   fields: () => ({
-    // !!!! user queries are for dev purposes only, do NOT keep this in prod!! !!!!
-    user: {
-      type: UserType,
-      description: 'A single KnightOwl user',
-      args: {
-        id: { type: GraphQLID },
-      },
-      resolve: (parent, args) => {
-        console.log('resolving user query')
-        return users.find(user => user.id === args.id)
-      },
-    },
-    users: {
-      type: new GraphQLList(UserType),
-      description: 'A list of all KnightOwl users',
-      resolve: () => users,
-    },
-    // signIn query should ultimately hash entered pass to check against hashed pass in db,
-    // and assign login cookie to user
+    // signIn query should ultimately assign login cookie to user
     signIn: {
       type: GraphQLID,
       description: 'Authenticates returning KnightOwl user and returns user ID',
@@ -204,21 +83,28 @@ const RootQueryType = new GraphQLObjectType({
       args: {
         id: { type: GraphQLID },
       },
-      resolve: (parent, args) => {
-        return badQueries.filter(query => query.userID === args.id);
+      resolve: async (parent, args) => {
+        const values = [ args.id ];
+        // Get all the queries associated with the id of the logged in user.
+        const GET_QUERIES = `SELECT * FROM bad_queries WHERE user_id = $1;`
+        const queries = await db.query(GET_QUERIES, values)
+          .then((data) => data.rows)
+          .catch((err) => console.log(err))
+        return queries;
       }
     },
-    middlewareQueries: {
-      type: new GraphQLList(BadQueryType),
-      description: 'Retrieves a list of queries rejected by a given Knight Owl middleware function and associated with current user',
-      args: {
-        userID: { type: GraphQLID },
-        middlewareFunc: { type: GraphQLString }
-      },  
-      resolve: (parent, args) => {
-        return badQueries.filter(badQuery => badQuery.rejectedBy === args.middlewareFunc && badQuery.userID === args.userID)
-      }
-    }
+    // Probably won't need separate query for specific middleware
+    // middlewareQueries: {
+    //   type: new GraphQLList(BadQueryType),
+    //   description: 'Retrieves a list of queries rejected by a given Knight Owl middleware function and associated with current user',
+    //   args: {
+    //     userID: { type: GraphQLID },
+    //     middlewareFunc: { type: GraphQLString }
+    //   },  
+    //   resolve: (parent, args) => {
+    //     return badQueries.filter(badQuery => badQuery.rejectedBy === args.middlewareFunc && badQuery.userID === args.userID)
+    //   }
+    // }
   })
 })
 
