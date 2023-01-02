@@ -149,23 +149,35 @@ const RootMutationType = new GraphQLObjectType({
       type: BadQueryType,
       description: 'Stores a rejected query in database so user can see metrics on query rejections from client',
       args: {
-        userID: { type: GraphQLID },
-        querierIPAddress: { type: GraphQLString },
-        queryString: { type: GraphQLString },
-        rejectedBy: { type: GraphQLString },
-        rejectedOn: { type: GraphQLString },
+        user_id: { type: GraphQLID },
+        querier_ip_address: { type: GraphQLString },
+        query_string: { type: GraphQLString },
+        rejected_by: { type: GraphQLString },
+        rejected_on: { type: GraphQLString },
       },
-      resolve: (parent, args) => {
-        const newQuery = {
-          id: `${newQueryID++}`,
-          userID: args.userID,
-          querierIPAddress: args.querierIPAddress,
-          queryString: args.queryString,
-          rejectedBy: args.rejectedBy,
-          rejectedOn: args.rejectedOn,
-        };
-        badQueries.push(newQuery);
-        return newQuery;
+      resolve: async (parent, args) => {
+        // const newQuery = {
+        //   id: `${newQueryID++}`,
+        //   userID: args.userID,
+        //   querierIPAddress: args.querierIPAddress,
+        //   queryString: args.queryString,
+        //   rejectedBy: args.rejectedBy,
+        //   rejectedOn: args.rejectedOn,
+        // };
+        // badQueries.push(newQuery);
+        // return newQuery;
+
+        // Insert SQL query to create a new query in the database
+         const newQuery = [args.user_id, args.querier_ip_address, args.query_string, args.rejected_by, args.rejected_on];
+         const ADD_QUERY = `INSERT INTO bad_queries (user_id, querier_ip_address, query_string, rejected_by, rejected_on) VALUES ($1, $2, $3, $4, $5) RETURNING query_id;`;
+      
+         const newQueryId = await db.query(ADD_QUERY, newQuery)
+          .then(data => {
+            console.log('newQuery: ', data.rows[0])
+            return data.rows[0];
+          })
+          .catch(err => console.log(err));
+        return newQueryId;
       }
     }
   })
