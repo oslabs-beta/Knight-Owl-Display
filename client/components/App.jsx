@@ -2,7 +2,12 @@
 import { Container, Grid } from "@mui/material";
 import React from "react";
 import '../app.css';
-import '../hero.css';
+import '../styles/hero.css';
+import '../styles/problem.css';
+import '../styles/features.css';
+import '../styles/dashboard.css';
+import '../styles/techStack.css';
+import '../styles/team.css';
 
 // Component imports
 import Features from "./Features.jsx";
@@ -32,7 +37,6 @@ function App() {
               <Features/>
             </Grid>
             <Grid item xs={12}>
-              <div className="techstack-header-sg">Knight Owl Tech Stack</div>
               <TechStack/>
               <Team/>
             </Grid>

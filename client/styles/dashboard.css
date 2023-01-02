@@ -11,3 +11,9 @@
   background-color: black;
   border-radius: 20px;
 }
+
+.chart {
+  border: 1px solid lightgray;
+  border-radius: 10px;
+  margin: 15px;
+}

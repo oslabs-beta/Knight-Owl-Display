@@ -1,0 +1,22 @@
+.features-sg {
+  margin-bottom: 10vh;
+  font-family: 'Merriweather', 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+
+.features-header-sg {
+  font-size: 1.5rem;
+  font-weight: 800;
+  margin-bottom: 5vh;
+}
+
+.features-point-sg {
+  box-shadow: rgba(17, 12, 46, 0.15) 0px 48px 100px 0px;
+  padding: 20px;
+  margin: 20px;
+  min-height: 20vh;
+  border-radius: 20px;
+}
+
+.features-desc-sg {
+  color: rgb(62, 62, 62);
+}

@@ -10,6 +10,7 @@ import simonHeadshot from '../../docs/assets/simon-headshot.jpg';
 export default function Team() {
   return (
     <div className='team-container-sg'>
+      <p className='team-title-sg'>The Team Behind Protecting Your Queries</p>
       <Grid 
           container
           direction="row"

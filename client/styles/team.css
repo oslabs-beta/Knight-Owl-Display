@@ -1,0 +1,29 @@
+.team-container-sg {
+    margin-top: 10vh;
+}
+
+.team-title-sg {
+  text-align: center;
+  font-weight: 800;
+  font-family: 'Merriweather', 'Open Sans', 'Helvetica Neue', sans-serif;
+  font-size: 2rem;
+  color: rgb(48, 48, 48);
+}
+
+.team-sg {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.team-headshot {
+    max-width: 15rem;
+    max-height: 15rem;
+    border-radius: 20px;
+}
+
+.team-name-sg {
+  font-weight: 800;
+  font-family: 'Merriweather', 'Open Sans', 'Helvetica Neue', sans-serif;
+  font-size: 1.5rem;
+  color: rgb(48, 48, 48);
+}

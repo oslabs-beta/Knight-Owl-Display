@@ -15,7 +15,9 @@ const NavBar = () => {
   return (
     <>
       <AppBar>
-        <Toolbar>
+        <Toolbar style={{
+          backgroundColor: "#dfc1ae",
+        }}>
           <IconButton>
             <img className='CE-LogoImage' src={owlLogo} width='50' height='50'/>
           </IconButton>
