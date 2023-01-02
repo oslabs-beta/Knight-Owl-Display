@@ -5,6 +5,13 @@
   border-radius: 20px;
 }
 
+.Graph {
+  border: transparent;
+  width: 40vw;
+  background-color: black;
+  border-radius: 20px;
+}
+
 .chart {
   border: 1px solid lightgray;
   border-radius: 10px;
