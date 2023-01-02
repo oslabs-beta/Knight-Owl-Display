@@ -1,6 +1,7 @@
 import React from 'react';
 import { Grid } from "@mui/material";
 import '../dashboard.css';
+import { LineGraph } from './Graph.jsx';
 
 export default function Dashboard() {
   return (
@@ -13,15 +14,12 @@ export default function Dashboard() {
         alignItems="center">
           <Grid item xs={3}>
             {/* Insert dashboard component here */}
-            <h1>Hi</h1>
+          </Grid>
+          <Grid item xs={3}>
+             <LineGraph></LineGraph>
           </Grid>
           <Grid item xs={3}>
              {/* Insert dashboard component here */}
-             <h1>I'm</h1>
-          </Grid>
-          <Grid item xs={3}>
-             {/* Insert dashboard component here */}
-             <h1>Jackon</h1>
           </Grid>
       </Grid>
       </Grid>

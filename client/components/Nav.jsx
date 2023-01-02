@@ -20,6 +20,7 @@ const NavBar = () => {
             <img className='CE-LogoImage' src={owlLogo} width='50' height='50'/>
           </IconButton>
           <Typography variant='h6' component='div' sx={{flexGrow: 1}}>
+            KNIGHTOWL
           </Typography>
           <Stack direction='row' spacing={2}>
             <Button color='inherit' onClick={()=>toggleAuth(true)}>Sign In</Button>
