@@ -1,6 +1,6 @@
 .full-dash {
   border: transparent;
-  min-height: 97vh;
+  min-height: 100vh;
   background-color: white;
   border-radius: 20px;
 }
@@ -10,10 +10,12 @@
   width: 40vw;
   background-color: black;
   border-radius: 20px;
+  margin: 15px;
 }
 
 .chart {
-  border: 1px solid lightgray;
+  border: 1px solid red;
+  height: 100%;
   border-radius: 10px;
   margin: 15px;
 }
