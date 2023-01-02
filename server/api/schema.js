@@ -13,6 +13,8 @@ const {
 const bcrypt = require('bcrypt');
 const saltRounds = 10;
 
+const db = require ('../models/database.js');
+
 // hardcoding data for test purposes
 let newUserId = 1;
 const users = [
