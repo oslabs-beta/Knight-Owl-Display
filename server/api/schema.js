@@ -179,15 +179,11 @@ const RootQueryType = new GraphQLObjectType({
         email: { type: GraphQLString },
         password: { type: GraphQLString },
       },
-      resolve: (parent, args) => {
-        for (const user of users) {
-          // NOTE: how to stop someone from logging in as multiple users simultaneously, since multiple
-          // instances of the same query type can be sent in a single operation?
-          if (user.email === args.email && user.password === args.password) {
-            return user.id;
-          }
-        }
-        return 'Email or password incorrect.'
+      resolve: async (parent, args) => {
+        console.log('in signin resolver')
+        const requestedUser = users.find(user => user.email === args.email);
+        const result = await bcrypt.compare(args.password, requestedUser.password).then(result => result);
+        return (result === false) ? 'Email or password incorrect.' : requestedUser.id;
       }
     },
     userQueries: {
@@ -235,12 +231,8 @@ const RootMutationType = new GraphQLObjectType({
         }
         // hash password befo re saving
         const {password} = args;
-        console.log('args: ', args)
-        console.log('password: ', password)
-        console.log('salt: ', saltRounds)
         const result = await bcrypt.hash(password, saltRounds).then(function(hash) {
          // create new user object in users array with id
-         console.log('hash: ', hash)
          const newUser = {
           id: `user${newUserId++}`,
           email: args.email,
@@ -248,7 +240,6 @@ const RootMutationType = new GraphQLObjectType({
           // password: args.password,
           organization: args.organization
          };
-         console.log('user: ', newUser)
          users.push(newUser);
          // return id
          return newUser.id;
