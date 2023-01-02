@@ -182,10 +182,20 @@ const RootQueryType = new GraphQLObjectType({
         password: { type: GraphQLString },
       },
       resolve: async (parent, args) => {
-        console.log('in signin resolver')
-        const requestedUser = users.find(user => user.email === args.email);
-        const result = await bcrypt.compare(args.password, requestedUser.password).then(result => result);
-        return (result === false) ? 'Email or password incorrect.' : requestedUser.id;
+        let userID; // later assigned with userID if found in DB and password is successfully compared by the bcrypt.compare method
+        const values = [ args.email ];
+        const VERIFY_USER = `SELECT password, id FROM users WHERE email = $1;`;
+        // Returns a boolean if the user has been verified given the inputted credentials, password and email.
+        const user = await db.query(VERIFY_USER, values)
+          .then(async (hash) => {
+            // Compare the hashed password via bcrypt with the stored password in the database given the user provided email.
+            const result = await bcrypt.compare(args.password, hash.rows[0].password).then(result => result);
+            console.log('user: ', hash.rows[0]);
+            userID = hash.rows[0].id
+            return result;
+          })
+          .catch((err) => console.log(err));
+        return (user === false) ? 'Email or password incorrect.' : userID;
       }
     },
     userQueries: {
@@ -225,28 +235,27 @@ const RootMutationType = new GraphQLObjectType({
         organization: { type: GraphQLString },
       },
       resolve: async (parent, args) => {
-        // check to make sure no other users registered to same email
-        for (const user of users) {
-          if (user.email === args.email) {
-            return "User with this email already exists."
-          }
-        }
-        // hash password befo re saving
-        const {password} = args;
+      
+        // hash password before saving
+        const { password } = args;
         const result = await bcrypt.hash(password, saltRounds).then(function(hash) {
-         // create new user object in users array with id
-         const newUser = {
-          id: `user${newUserId++}`,
-          email: args.email,
-          password: hash,
-          // password: args.password,
-          organization: args.organization
-         };
-         users.push(newUser);
-         // return id
-         return newUser.id;
-
+         // Insert SQL query to create a new user in the database
+         const newUser = [args.email, hash, args.organization];
+         const ADD_USER = `INSERT INTO users (email, password, organization) VALUES ($1, $2, $3) RETURNING id;`;
+         // Add the newUser to the database and if there is already a user with the following email then return the error string
+         const newUserId = db.query(ADD_USER, newUser)
+          .then(newUser => {
+            console.log('newUser: ', newUser.rows)
+            return newUser;
+          })
+          .catch(err => {
+            console.log(err);
+            // Error code corresponding to a duplicate user.
+            if (err.code === '23505') return 'Duplicate user found error';
+          });
+          return newUserId;
        })
+       // Return either the error string of the duplicate user or the user id of the new user
        return result;
       }
     },
