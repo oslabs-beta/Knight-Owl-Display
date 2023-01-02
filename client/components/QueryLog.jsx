@@ -28,8 +28,12 @@ const columns = [
 ]
 
 function createData(date, querystring, ip, limiter) {
+  let color;
+  if (limiter === 'DepthLimiter') color = 'seagreen';
+  if (limiter === 'RateLimiter') color = 'dodgerblue';
+  if (limiter === 'CostLimiter') color = 'firebrick';
   
-  return { date, querystring, ip, limiter };
+  return { date, querystring, ip, limiter, color };
 }
 
 const rows = [
@@ -72,8 +76,8 @@ export default function QueryLog() {
   };
 
   return (
-    <Paper sx={{ width: '100%' }} style={{border:"1px solid green", height:'90%'}}>
-      <TableContainer sx={{ maxHeight: "100vh" }}>
+    <Paper sx={{ width: '100%' }} style={{border: 'transparent', height:'90%'}}>
+      <TableContainer  sx={{ maxHeight: "100vh" }}>
         <Table stickyHeader aria-label="sticky table">
           <TableHead>
             <TableRow>
@@ -98,15 +102,15 @@ export default function QueryLog() {
               .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
               .map((row) => {
                 return (
-                  <TableRow hover role="checkbox" tabIndex={-1} key={row.code}>
-                    {columns.map((column) => {
-                      const value = row[column.id];
-                      return (
-                        <TableCell key={column.id} align={column.align}>
-                          {value}
-                        </TableCell>
-                      );
-                    })}
+                  <TableRow hover role="checkbox" tabIndex={-1} key={row.date}>
+                    <TableCell component="th" scope="row">
+                      {row.date}
+                    </TableCell>
+                    <TableCell>{row.querystring}</TableCell>
+                    <TableCell align="right">{row.ip}</TableCell>
+                    <TableCell id="limiter" align="right" style={{ color: row.color }}>
+                      {row.limiter}
+                    </TableCell>
                   </TableRow>
                 );
               })}

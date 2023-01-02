@@ -15,11 +15,13 @@ export default function Dashboard() {
         flexWrap="nowrap"
         justify="center"
         >
-          <Grid item xs={6} >
+          <Grid item xs={7} >
+            <h1>Query History</h1>
             <QueryLog />
           </Grid>
 
-          <Grid item xs={6}>
+          <Grid item xs={5}>
+            <h1>KO'd Queries Over Time</h1>
             <Grid
              container
              maxWidth="lg"
