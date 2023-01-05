@@ -5,6 +5,7 @@ import LineChartEx from './LineChartEx.jsx';
 import { LineGraph } from './Graph.jsx';
 import QueryLog from './QueryLog.jsx';
 import axios from 'axios';
+import { PieChart } from './PieChart.jsx';
 
 export default function Dashboard() {
 
@@ -63,7 +64,7 @@ export default function Dashboard() {
             >
 
               <Grid item xs={12} >
-                <LineChartEx />
+                <PieChart />
               </Grid>
               <Grid item xs={12}>
                 {/* Insert dashboard component here */}
