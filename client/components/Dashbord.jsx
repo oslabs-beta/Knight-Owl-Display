@@ -1,12 +1,43 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Grid } from "@mui/material";
 import BarChart from './BarChart.jsx';
 import LineChartEx from './LineChartEx.jsx';
 import { LineGraph } from './Graph.jsx';
 import QueryLog from './QueryLog.jsx';
+import axios from 'axios';
 import { PieChart } from './PieChart.jsx';
 
 export default function Dashboard() {
+
+  const [ data, setData ] = useState( { queries: [] } );
+
+  useEffect(() => {
+    const GET_QUERIES = `
+    query {
+        userQueries(id: 1) {
+          query_id
+          querier_ip_address
+          query_string
+          rejected_by
+          rejected_on
+          user_id
+        }
+      }`;
+
+    const fetchQueries = async () => {
+      // Call the GraphQL API with the given query string for all bad queries.
+      const queryResult = await axios.post(
+        'http://localhost:8080/graphql', {
+          query: GET_QUERIES
+      });
+      // Update the state to hold all the bad queries related to the specific user profile.
+      const fetchedQueryData = queryResult.data.data;
+      setData({ queries: fetchedQueryData.userQueries })
+    };
+
+    fetchQueries();
+  }, data);
+
   return (
       <Grid
         container
@@ -37,6 +68,7 @@ export default function Dashboard() {
               </Grid>
               <Grid item xs={12}>
                 {/* Insert dashboard component here */}
+                {console.log(data)}
                 <BarChart />
               </Grid>
               <Grid item xs={12}>
