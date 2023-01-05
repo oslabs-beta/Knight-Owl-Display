@@ -183,13 +183,15 @@ const RootMutationType = new GraphQLObjectType({
       type: GraphQLString,
       description: 'Stores a batch of queries forwarded from KO middleware',
       args: {
-        cachedQueries: { type: GraphQLString },
+        cachedQueries: { type: new GraphQLList(GraphQLString) },
         KOUser: { type: GraphQLString },
         KOPass: { type: GraphQLString }
       },
-      resolve: (parent, args) => {
-        console.log ('in querybatch resolver: ', args.KOUser)
-        return args;
+      resolve: async (parent, args) => {
+        // cache = await args.cachedQueries.json();
+        const { KOUser } = args;
+        console.log ('in querybatch resolver: ', args.cachedQueries)
+        return KOUser;
       }
     }
   })
