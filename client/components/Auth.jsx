@@ -52,7 +52,7 @@ const Auth = (props) => {
       // attempting to return user id as result of request
       query = `query SignIn($email: String, $password: String) {
         signIn(email: $email, password: $password)
-      }`
+      }`;
       variables = {
         email: fieldEntries.email,
         password: fieldEntries.password,

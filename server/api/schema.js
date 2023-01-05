@@ -48,6 +48,16 @@ const BadQueryType = new GraphQLObjectType({
   })
 })
 
+const BatchQueriesType = new GraphQLObjectType({
+  name: 'BatchQueries',
+  description: 'A collection of queries forwarded from KO middleware',
+  fileds: () => ({
+    cachedQueries: { type: GraphQLString },
+    KOUser: { type: GraphQLString },
+    KOPass: { type: GraphQLString }
+  })
+})
+
 const RootQueryType = new GraphQLObjectType({
   name: 'Query',
   description: 'Root Query',
@@ -156,17 +166,6 @@ const RootMutationType = new GraphQLObjectType({
         rejected_on: { type: GraphQLString },
       },
       resolve: async (parent, args) => {
-        // const newQuery = {
-        //   id: `${newQueryID++}`,
-        //   userID: args.userID,
-        //   querierIPAddress: args.querierIPAddress,
-        //   queryString: args.queryString,
-        //   rejectedBy: args.rejectedBy,
-        //   rejectedOn: args.rejectedOn,
-        // };
-        // badQueries.push(newQuery);
-        // return newQuery;
-
         // Insert SQL query to create a new query in the database
          const newQuery = [args.user_id, args.querier_ip_address, args.query_string, args.rejected_by, args.rejected_on];
          const ADD_QUERY = `INSERT INTO bad_queries (user_id, querier_ip_address, query_string, rejected_by, rejected_on) VALUES ($1, $2, $3, $4, $5) RETURNING query_id;`;
@@ -178,6 +177,19 @@ const RootMutationType = new GraphQLObjectType({
           })
           .catch(err => console.log(err));
         return newQueryId;
+      }
+    },
+    saveQueryBatch: {
+      type: GraphQLString,
+      description: 'Stores a batch of queries forwarded from KO middleware',
+      args: {
+        cachedQueries: { type: GraphQLString },
+        KOUser: { type: GraphQLString },
+        KOPass: { type: GraphQLString }
+      },
+      resolve: (parent, args) => {
+        console.log ('in querybatch resolver: ', args.KOUser)
+        return args;
       }
     }
   })

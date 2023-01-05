@@ -25,7 +25,7 @@ app.get('/', (req, res) => {
 app.use('/graphql', knightOwl.costLimiter, knightOwl.rateLimiter, graphqlHTTP({
   schema,
   graphiql: true,
-  validationRules: [knightOwl.depthLimit(20)]
+  validationRules: [knightOwl.depthLimit(0)]
 }));
 
 // 404 Handler
