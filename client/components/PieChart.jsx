@@ -23,29 +23,39 @@ const costLimiterColor = {
   border: 'rgba(54, 162, 235, 1)',
 };
 
-export const data = {
-  labels: ['Depth Limiter', 'Cost Limiter', 'Rate Limiter'],
-  datasets: [
-    {
-      label: 'Bounced Queries by Limiter',
-      // Placeholder data
-      data: [3, 3, 3],
-      backgroundColor: [
-        depthLimiterColor.background,
-        rateLimiterColor.background,
-        costLimiterColor.background,
-        
-      ],
-      borderColor: [
-        depthLimiterColor.border,
-        rateLimiterColor.border,
-        costLimiterColor.border,
-      ],
-      borderWidth: 1,
-    },
-  ],
-};
 
-export function PieChart() {
+export function PieChart(props) {
+  const pieChartCounter = (fetchedData) => {
+      const counts = [0, 0, 0];
+      fetchedData.queries.forEach(query => {
+        if (query.rejected_by === 'depth_limiter') counts[0]++;
+        if (query.rejected_by === 'rate_limiter') counts[1]++;
+        if (query.rejected_by === 'cost_limiter') counts[2]++;
+      })
+      return counts;
+    };
+  
+  const data = {
+    labels: ['Depth Limiter', 'Cost Limiter', 'Rate Limiter'],
+    datasets: [
+      {
+        label: 'Bounced Queries by Limiter',
+        // Placeholder data
+        data: pieChartCounter(props.queryData),
+        backgroundColor: [
+          depthLimiterColor.background,
+          rateLimiterColor.background,
+          costLimiterColor.background,
+          
+        ],
+        borderColor: [
+          depthLimiterColor.border,
+          rateLimiterColor.border,
+          costLimiterColor.border,
+        ],
+        borderWidth: 1,
+      },
+    ],
+  };
   return <Pie className='Graph' data={data} />;
 }
