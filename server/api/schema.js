@@ -29,7 +29,7 @@ const UserType = new GraphQLObjectType({
   })
 });
 
-const VerifiedUSerType = new GraphQLObjectType({
+const VerifiedUserType = new GraphQLObjectType({
   name: 'VerifiedUser',
   description: 'The response sent back to client for a successful sign in request',
   fields: () => ({
@@ -84,7 +84,6 @@ const RootQueryType = new GraphQLObjectType({
       },
       resolve: async (parent, args, context) => {
         const {res} = context;
-        res.locals.test = 'test'
         console.log('context: ', res.locals);
         let userID; // later assigned with userID if found in DB and password is successfully compared by the bcrypt.compare method
         const values = [ args.email ];
@@ -95,7 +94,7 @@ const RootQueryType = new GraphQLObjectType({
             // Compare the hashed password via bcrypt with the stored password in the database given the user provided email.
             const result = await bcrypt.compare(args.password, hash.rows[0].password).then(result => result);
             console.log('user: ', hash.rows[0]);
-            userID = hash.rows[0].id
+            userID = hash.rows[0].id;
 
             res.cookie('Auth', jwt.sign(
               {userID: userID,
@@ -119,14 +118,21 @@ const RootQueryType = new GraphQLObjectType({
       args: {
         id: { type: GraphQLID },
       },
-      resolve: async (parent, args) => {
-        const values = [ args.id ];
-        // Get all the queries associated with the id of the logged in user.
-        const GET_QUERIES = `SELECT * FROM bad_queries WHERE user_id = $1;`
-        const queries = await db.query(GET_QUERIES, values)
-          .then((data) => data.rows)
-          .catch((err) => console.log(err))
-        return queries;
+      resolve: async (parent, args, context) => {
+        console.log('getting queries')
+        if (context.res.signedIn.signedIn) {
+          const values = [ context.res.signedIn.userID ];
+          console.log('signed in with credentials: ', context.res.signedIn)
+          // Get all the queries associated with the id of the logged in user.
+          const GET_QUERIES = `SELECT * FROM bad_queries WHERE user_id = $1;`
+          const queries = await db.query(GET_QUERIES, values)
+            .then((data) => data.rows)
+            .catch((err) => console.log(err))
+          return queries;
+        } else {
+          console.log('refusing to load queries')
+          return [{rejected_by: "User not logged in"}]
+        }
       }
     },
     // Probably won't need separate query for specific middleware
@@ -149,7 +155,7 @@ const RootMutationType = new GraphQLObjectType({
   description: 'Root Mutation',
   fields: () => ({
     createUser: {
-      type: GraphQLString,
+      type: GraphQLID,
       description: 'Registers new user',
       args: {
         email: { type: GraphQLString },
@@ -170,7 +176,7 @@ const RootMutationType = new GraphQLObjectType({
             console.log('newUser: ', newUser.rows)
 
             res.cookie('Auth', jwt.sign(
-              {userID: newUser,
+              {userID: newUser.rows[0],
               email: args.email,
               signedIn: true},
               process.env.TOKEN_KEY,
@@ -179,7 +185,7 @@ const RootMutationType = new GraphQLObjectType({
               }
             ));
 
-            return newUser;
+            return newUser.rows[0];
           })
           .catch(err => {
             console.log(err);
