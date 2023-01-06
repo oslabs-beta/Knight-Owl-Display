@@ -1,3 +1,5 @@
+require('dotenv').config();
+
 const {
   GraphQLSchema,
   GraphQLObjectType,
@@ -10,7 +12,7 @@ const {
   GraphQLInputObjectType
 } = require ('graphql');
 
-
+const jwt = require('jsonwebtoken')
 const bcrypt = require('bcrypt');
 const saltRounds = 10;
 
@@ -26,6 +28,15 @@ const UserType = new GraphQLObjectType({
     password: { type: new GraphQLNonNull(GraphQLString)},
   })
 });
+
+const VerifiedUSerType = new GraphQLObjectType({
+  name: 'VerifiedUser',
+  description: 'The response sent back to client for a successful sign in request',
+  fields: () => ({
+    id: { type: GraphQLID},
+    token: { type: GraphQLID }
+  })
+})
 
 const MiddlewareType = new GraphQLObjectType({
   name: 'Middleware',
@@ -71,7 +82,10 @@ const RootQueryType = new GraphQLObjectType({
         email: { type: GraphQLString },
         password: { type: GraphQLString },
       },
-      resolve: async (parent, args) => {
+      resolve: async (parent, args, context) => {
+        const {res} = context;
+        res.locals.test = 'test'
+        console.log('context: ', res.locals);
         let userID; // later assigned with userID if found in DB and password is successfully compared by the bcrypt.compare method
         const values = [ args.email ];
         const VERIFY_USER = `SELECT password, id FROM users WHERE email = $1;`;
@@ -82,6 +96,17 @@ const RootQueryType = new GraphQLObjectType({
             const result = await bcrypt.compare(args.password, hash.rows[0].password).then(result => result);
             console.log('user: ', hash.rows[0]);
             userID = hash.rows[0].id
+
+            res.cookie('Auth', jwt.sign(
+              {userID: userID,
+              email: args.email,
+              signedIn: true},
+              process.env.TOKEN_KEY,
+              {
+                expiresIn: '2h',
+              }
+            ));
+
             return result;
           })
           .catch((err) => console.log(err));

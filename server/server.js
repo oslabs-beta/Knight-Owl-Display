@@ -2,6 +2,7 @@ const express = require('express');
 const path = require('path');
 const app = express();
 const { graphqlHTTP } = require('express-graphql');
+const cookieParser = require('cookie-parser')
 const { knightOwl } = require('knightowl')
 const util = require('util');
 const { schema } = require('./api/schema.js')
@@ -12,7 +13,7 @@ const { schema } = require('./api/schema.js')
 // Automatically parse urlencoded body content and form data from incoming requests and place it in req.body
 app.use(express.json());
 app.use(express.urlencoded());
-
+app.use(cookieParser());
 
 app.use('/build', express.static(path.join(__dirname, '../build')));
 
