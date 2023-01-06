@@ -29,42 +29,38 @@ const columns = [
 
 function createData(date, querystring, ip, limiter) {
   let color;
-  if (limiter === 'DepthLimiter') color = 'seagreen';
-  if (limiter === 'RateLimiter') color = 'dodgerblue';
-  if (limiter === 'CostLimiter') color = 'firebrick';
+  if (limiter === 'depth_limiter') color = 'seagreen';
+  if (limiter === 'rate_limiter') color = 'dodgerblue';
+  if (limiter === 'cost_limiter') color = 'firebrick';
   
   return { date, querystring, ip, limiter, color };
 }
 
-const rows = [
-  createData('1/2/2023', '[GraphQL Query]', '135.237.108.247', 'DepthLimiter'),
-  createData('1/4/2023', '[GraphQL Query]', '135.237.108.247', 'DepthLimiter'),
-  createData('1/13/2023', '[GraphQL Query]', '135.237.108.247', 'DepthLimiter'),
-  createData('1/14/2023', '[GraphQL Query]', '135.237.108.247', 'RateLimiter'),
-  createData('1/15/2023', '[GraphQL Query]', '135.237.108.247', 'CostLimiter'),
-  createData('1/16/2023', '[GraphQL Query]', '135.237.108.247', 'DepthLimiter'),
-  createData('1/16/2023', '[GraphQL Query]', '133.132.234.525', 'RateLimiter'),
-  createData('1/17/2023', '[GraphQL Query]', '135.237.108.247', 'DepthLimiter'),
-  createData('1/4/2023', '[GraphQL Query]', '182.456.345.123', 'CostLimiter'),
-  createData('1/4/2023', '[GraphQL Query]', '135.237.108.247', 'DepthLimiter'),
-  createData('1/4/2023', '[GraphQL Query]', '135.237.108.247', 'DepthLimiter'),
-  createData('1/4/2023', '[GraphQL Query]', '125.237.108.247', 'CostLimiter'),
-  createData('1/4/2023', '[GraphQL Query]', '135.237.108.247', 'DepthLimiter'),
-  createData('1/13/2023', '[GraphQL Query]', '135.237.108.247', 'DepthLimiter'),
-  createData('1/14/2023', '[GraphQL Query]', '135.237.108.247', 'RateLimiter'),
-  createData('1/15/2023', '[GraphQL Query]', '135.237.108.247', 'CostLimiter'),
-  createData('1/16/2023', '[GraphQL Query]', '135.237.108.247', 'DepthLimiter'),
-  createData('1/16/2023', '[GraphQL Query]', '133.132.234.525', 'RateLimiter'),
-  createData('1/17/2023', '[GraphQL Query]', '135.237.108.247', 'DepthLimiter'),
-  createData('1/4/2023', '[GraphQL Query]', '182.456.345.123', 'CostLimiter'),
-  createData('1/4/2023', '[GraphQL Query]', '135.237.108.247', 'DepthLimiter'),
-  createData('1/4/2023', '[GraphQL Query]', '135.237.108.247', 'DepthLimiter'),
-  createData('1/4/2023', '[GraphQL Query]', '125.237.108.247', 'CostLimiter'),
-];
 
-export default function QueryLog() {
+const rows = [];
+
+export default function QueryLog(props) {
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
+  
+  const mapQueryData = (queries) => {
+    for (let query of queries) {
+      const {
+        querier_ip_address,
+        query_string,
+        rejected_by,
+        rejected_on
+      } = query;
+     rows.push(
+        createData(
+        `${new Date(Number(rejected_on))}`,
+        `${query_string}`,
+        `${querier_ip_address}`,
+        `${rejected_by}`,
+      ));
+    }
+    return;
+  };
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -74,6 +70,10 @@ export default function QueryLog() {
     setRowsPerPage(+event.target.value);
     setPage(0);
   };
+
+  if (props.queryData.queries !== undefined) {
+    mapQueryData(props.queryData.queries);
+  }
 
   return (
     <Paper sx={{ width: '100%' }} style={{border: 'transparent', height:'90%'}}>
@@ -98,7 +98,7 @@ export default function QueryLog() {
             </TableRow>
           </TableHead>
           <TableBody>
-            {rows
+            {rows.slice(rows.length / 2)
               .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
               .map((row) => {
                 return (

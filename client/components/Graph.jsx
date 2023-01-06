@@ -45,7 +45,7 @@ export const options = {
     },
     y1: {
       type: 'linear',
-      display: true,
+      display: false,
       position: 'right',
       grid: {
         drawOnChartArea: false,
@@ -54,23 +54,66 @@ export const options = {
   },
 };
 
-const labels = ['January', 'February', 'March', 'April', 'May', 'June', 'July'];
+const labels = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+
+
+const depthLimiterColor = {
+  // Currently Green
+  background: 'rgba(75, 192, 192, 0.2)',
+  border: 'rgba(75, 192, 192, 1)',
+};
+
+
+const rateLimiterColor =  {
+  // Currently Blue
+  background: 'rgba(255, 99, 132, 0.2)',
+  border: 'rgba(255, 99, 132, 1)',
+};
+
+const costLimiterColor = {
+  // Currently Red
+  background: 'rgba(54, 162, 235, 0.2)',
+  border: 'rgba(54, 162, 235, 1)',
+};
+
+// Placeholder Data for Charts
+
+const randomArrayPopulate = (numEl) => {
+  const arr = [];
+  for(let i = 0; i < numEl; i++) {
+    const randomNum = Math.ceil(Math.random()*1000);
+    arr.push(randomNum);
+  }
+  return arr;
+}
+
+const depthArr = randomArrayPopulate(12);
+const costArr = randomArrayPopulate(12);
+const rateArr = randomArrayPopulate(12);
+
 
 export const data = {
   labels,
   datasets: [
     {
       label: 'Depth Limiter',
-      data: [12, 7, 5,76, 4, 55, 7],
-      borderColor: 'rgb(255, 99, 132)',
-      backgroundColor: 'rgba(255, 99, 132, 0.5)',
+      data: depthArr,
+      borderColor: depthLimiterColor.border,
+      backgroundColor: depthLimiterColor.background,
       yAxisID: 'y',
     },
     {
       label: 'Rate Limiter',
-      data: [12, 3427, 53424,743246, 34244, 55432, 7],
-      borderColor: 'rgb(53, 162, 235)',
-      backgroundColor: 'rgba(53, 162, 235, 0.5)',
+      data: costArr,
+      borderColor: rateLimiterColor.border,
+      backgroundColor: rateLimiterColor.background,
+      yAxisID: 'y1',
+    },
+    {
+      label: 'Cost Limiter',
+      data: rateArr,
+      borderColor: costLimiterColor.border,
+      backgroundColor: costLimiterColor.background,
       yAxisID: 'y1',
     },
   ],
