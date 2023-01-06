@@ -6,7 +6,8 @@ const {
   GraphQLInt,
   GraphQLID,
   GraphQLNonNull,
-  GraphQLScalarType
+  GraphQLScalarType,
+  GraphQLInputObjectType
 } = require ('graphql');
 
 
@@ -48,13 +49,13 @@ const BadQueryType = new GraphQLObjectType({
   })
 })
 
-const BatchQueriesType = new GraphQLObjectType({
-  name: 'BatchQueries',
-  description: 'A collection of queries forwarded from KO middleware',
-  fileds: () => ({
-    cachedQueries: { type: GraphQLString },
-    KOUser: { type: GraphQLString },
-    KOPass: { type: GraphQLString }
+const BatchQueryInputType = new GraphQLInputObjectType({
+  name: 'BatchQueryInput',
+  fields: () => ({
+    querier_IP_address: { type: GraphQLString},
+    query_string: { type: GraphQLString },
+    rejected_by: { type: GraphQLString },
+    rejected_on: { type: GraphQLString },
   })
 })
 
@@ -183,7 +184,7 @@ const RootMutationType = new GraphQLObjectType({
       type: GraphQLString,
       description: 'Stores a batch of queries forwarded from KO middleware',
       args: {
-        cachedQueries: { type: new GraphQLList(GraphQLString) },
+        cachedQueries: { type: new GraphQLList(BatchQueryInputType) },
         KOUser: { type: GraphQLString },
         KOPass: { type: GraphQLString }
       },
