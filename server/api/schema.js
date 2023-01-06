@@ -6,7 +6,8 @@ const {
   GraphQLInt,
   GraphQLID,
   GraphQLNonNull,
-  GraphQLScalarType
+  GraphQLScalarType,
+  GraphQLInputObjectType
 } = require ('graphql');
 
 
@@ -45,6 +46,16 @@ const BadQueryType = new GraphQLObjectType({
     rejected_by: { type: GraphQLString },
     rejected_on: { type: GraphQLString },
     user_id: { type: GraphQLID },
+  })
+})
+
+const BatchQueryInputType = new GraphQLInputObjectType({
+  name: 'BatchQueryInput',
+  fields: () => ({
+    querier_IP_address: { type: GraphQLString},
+    query_string: { type: GraphQLString },
+    rejected_by: { type: GraphQLString },
+    rejected_on: { type: GraphQLString },
   })
 })
 
@@ -156,17 +167,6 @@ const RootMutationType = new GraphQLObjectType({
         rejected_on: { type: GraphQLString },
       },
       resolve: async (parent, args) => {
-        // const newQuery = {
-        //   id: `${newQueryID++}`,
-        //   userID: args.userID,
-        //   querierIPAddress: args.querierIPAddress,
-        //   queryString: args.queryString,
-        //   rejectedBy: args.rejectedBy,
-        //   rejectedOn: args.rejectedOn,
-        // };
-        // badQueries.push(newQuery);
-        // return newQuery;
-
         // Insert SQL query to create a new query in the database
          const newQuery = [args.user_id, args.querier_ip_address, args.query_string, args.rejected_by, args.rejected_on];
          const ADD_QUERY = `INSERT INTO bad_queries (user_id, querier_ip_address, query_string, rejected_by, rejected_on) VALUES ($1, $2, $3, $4, $5) RETURNING query_id;`;
@@ -178,6 +178,44 @@ const RootMutationType = new GraphQLObjectType({
           })
           .catch(err => console.log(err));
         return newQueryId;
+      }
+    },
+    saveQueryBatch: {
+      type: GraphQLString,
+      description: 'Stores a batch of queries forwarded from KO middleware',
+      args: {
+        cachedQueries: { type: new GraphQLList(BatchQueryInputType) },
+        KOUser: { type: GraphQLString },
+        KOPass: { type: GraphQLString }
+      },
+      resolve: async (parent, args) => {
+        // cache = await args.cachedQueries.json();
+        // confirm credentials
+        const { cachedQueries, KOUser, KOPass } = args;
+        const VERIFY_USER = `SELECT password, id FROM users WHERE email = $1;`;
+        const values = [KOUser];
+        let user_id;
+        const saved = await db.query(VERIFY_USER, values)
+          .then(async (hash) => {
+            // Compare the hashed password via bcrypt with the stored password in the database given the user provided email.
+            const result = await bcrypt.compare(KOPass, hash.rows[0].password).then(result => result);
+            console.log('user: ', hash.rows[0]);
+            user_id = hash.rows[0].id
+            return result;
+          })
+          .then(async (validated) => {
+            console.log('user id: ', user_id);
+            console.log('query 1: ', cachedQueries[0]);
+            savedQueries = []
+            for (let i = 0; i < cachedQueries.length; i++) {
+              const ADD_QUERY = `INSERT INTO bad_queries (user_id, querier_ip_address, query_string, rejected_by, rejected_on) VALUES ($1, $2, $3, $4, $5) RETURNING query_id;`;
+              const values = [user_id, cachedQueries[i].querier_IP_address, cachedQueries[i].query_string, cachedQueries[i].rejected_by, cachedQueries[i].rejected_on];
+              await db.query(ADD_QUERY, values).then(saved => savedQueries.push(saved));
+            }
+            return savedQueries;
+          })
+          .catch((err) => console.log(err));
+        return saved;
       }
     }
   })
