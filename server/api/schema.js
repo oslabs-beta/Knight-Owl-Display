@@ -190,9 +190,32 @@ const RootMutationType = new GraphQLObjectType({
       },
       resolve: async (parent, args) => {
         // cache = await args.cachedQueries.json();
-        const { KOUser } = args;
-        console.log ('in querybatch resolver: ', args.cachedQueries)
-        return KOUser;
+        // confirm credentials
+        const { cachedQueries, KOUser, KOPass } = args;
+        const VERIFY_USER = `SELECT password, id FROM users WHERE email = $1;`;
+        const values = [KOUser];
+        let user_id;
+        const saved = await db.query(VERIFY_USER, values)
+          .then(async (hash) => {
+            // Compare the hashed password via bcrypt with the stored password in the database given the user provided email.
+            const result = await bcrypt.compare(KOPass, hash.rows[0].password).then(result => result);
+            console.log('user: ', hash.rows[0]);
+            user_id = hash.rows[0].id
+            return result;
+          })
+          .then(async (validated) => {
+            console.log('user id: ', user_id);
+            console.log('query 1: ', cachedQueries[0]);
+            savedQueries = []
+            for (let i = 0; i < cachedQueries.length; i++) {
+              const ADD_QUERY = `INSERT INTO bad_queries (user_id, querier_ip_address, query_string, rejected_by, rejected_on) VALUES ($1, $2, $3, $4, $5) RETURNING query_id;`;
+              const values = [user_id, cachedQueries[i].querier_IP_address, cachedQueries[i].query_string, cachedQueries[i].rejected_by, cachedQueries[i].rejected_on];
+              await db.query(ADD_QUERY, values).then(saved => savedQueries.push(saved));
+            }
+            return savedQueries;
+          })
+          .catch((err) => console.log(err));
+        return saved;
       }
     }
   })
