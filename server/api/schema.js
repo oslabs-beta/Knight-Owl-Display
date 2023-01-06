@@ -156,8 +156,8 @@ const RootMutationType = new GraphQLObjectType({
         password: { type: GraphQLString },
         organization: { type: GraphQLString },
       },
-      resolve: async (parent, args) => {
-      
+      resolve: async (parent, args, context) => {
+        const { res } = context;
         // hash password before saving
         const { password } = args;
         const result = await bcrypt.hash(password, saltRounds).then(function(hash) {
@@ -168,6 +168,17 @@ const RootMutationType = new GraphQLObjectType({
          const newUserId = db.query(ADD_USER, newUser)
           .then(newUser => {
             console.log('newUser: ', newUser.rows)
+
+            res.cookie('Auth', jwt.sign(
+              {userID: newUser,
+              email: args.email,
+              signedIn: true},
+              process.env.TOKEN_KEY,
+              {
+                expiresIn: '2h',
+              }
+            ));
+
             return newUser;
           })
           .catch(err => {
