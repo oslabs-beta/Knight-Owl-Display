@@ -40,7 +40,7 @@ export default function Dashboard() {
       })
     };
     fetchQueries();
-  }, data);
+  }, []);
 
   return (
       <Grid
