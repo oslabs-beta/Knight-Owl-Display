@@ -11,7 +11,7 @@ export default function Dashboard() {
 
   const [ data, setData ] = useState( { queries: [] } );
   const [ fetchStatus, setFetchStatus ] = useState( { fetching: true } );
-  const [ signedIn, setSignedIn ] = useState({signedIn: false});
+  const [ signedIn, setSignedIn ] = useState({signedIn: "false"});
 
   useEffect(() => {
     const GET_QUERIES = `
@@ -47,7 +47,7 @@ export default function Dashboard() {
 
   // if (signedIn) {
     return (<>
-      {/* {signedIn === true && */}
+      {signedIn.signedIn === "true" &&
         <Grid
           container
           spacing={3}
@@ -90,7 +90,7 @@ export default function Dashboard() {
               </Grid>
             </Grid>
         </Grid>
-      {/* }  */}
+      }
       </>)
 
 };
