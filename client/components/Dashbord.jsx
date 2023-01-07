@@ -7,7 +7,7 @@ import QueryLog from './QueryLog.jsx';
 import axios from 'axios';
 import { PieChart } from './PieChart.jsx';
 
-export default function Dashboard() {
+export default function Dashboard(props) {
 
   const [ data, setData ] = useState( { queries: [] } );
   const [ fetchStatus, setFetchStatus ] = useState( { fetching: true } );
