@@ -108,7 +108,7 @@ const RootQueryType = new GraphQLObjectType({
             return result;
           })
           .catch((err) => console.log(err));
-        return (user === false) ? 'Email or password incorrect.' : 'Success';
+        return (user === true) ? 'Success' : 'Email or password incorrect.';
       }
     },
     userQueries: {
@@ -184,14 +184,14 @@ const RootMutationType = new GraphQLObjectType({
               }
             ));
 
-            return newUser.rows[0];
+            return 'Success';
           })
           .catch(err => {
             console.log(err);
             // Error code corresponding to a duplicate user.
             if (err.code === '23505') return 'Duplicate user found error';
           });
-          return 'Success';
+          return result;
        })
        // Return either the error string of the duplicate user or the user id of the new user
        return result;

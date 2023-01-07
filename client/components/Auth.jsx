@@ -8,6 +8,7 @@ const Auth = (props) => {
   // use the useState hook to manage state for whether the user is looking at login/auth fields and conditionally render accordingly
   const [displayState, toggleDisplay] = useState('logIn') // possible values: 'logIn', 'signUp'
   const [redirect, setRedirect] = useState(false);
+  const [badSignIn, setBadSignIn] = useState(false);
 
   // use the useState hook to track user entry into login/signup fields
   const [fieldEntries, updateField] = useState({
@@ -74,6 +75,8 @@ const Auth = (props) => {
     .then(response => {
       if (response.data.signIn === 'Success' || response.data.createUser === 'Success') {
         setRedirect(true);
+      } else {
+        setBadSignIn(true);
       }
     })
   }
@@ -114,6 +117,8 @@ const Auth = (props) => {
             <Button onClick={sendForms}>Sign Up</Button>
           </DialogActions>
           </form>}
+          {badSignIn === true &&
+          <p>Failed to sign in. Please try again.</p>}
           {redirect === true &&
           <Navigate to='/dashboard' replace='true' />}
     </div>
