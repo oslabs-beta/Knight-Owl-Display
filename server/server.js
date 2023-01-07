@@ -3,6 +3,7 @@ const path = require('path');
 const app = express();
 const { graphqlHTTP } = require('express-graphql');
 const { knightOwl } = require('knightowl')
+const PORT = process.env.PORT || 3000;
 
 const { schema } = require('./api/schema.js')
 // ATTN - testController commented out until db is spun up and can be connected to
@@ -13,8 +14,9 @@ const { schema } = require('./api/schema.js')
 app.use(express.json());
 app.use(express.urlencoded());
 
-
-app.use('/build', express.static(path.join(__dirname, '../build')));
+if (process.env.NODE_ENV === "production") {
+  app.use('/build', express.static(path.join(__dirname, '../build')));
+}
 
 // Root
 app.get('/', (req, res) => {
@@ -46,6 +48,6 @@ app.use((err, req, res, next) => {
 });
 
 // Listen on Port 3000
-app.listen(3000);
+app.listen(PORT);
 
 module.exports = app;

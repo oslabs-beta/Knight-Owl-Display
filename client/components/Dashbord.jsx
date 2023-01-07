@@ -28,7 +28,7 @@ export default function Dashboard() {
     const fetchQueries = async () => {
       // Call the GraphQL API with the given query string for all bad queries.
       const queryResult = await axios.post(
-        'http://localhost:8080/graphql', {
+        '/graphql', {
           query: GET_QUERIES
       }).then(response => {
         // Update the state to hold all the bad queries related to the specific user profile.
@@ -40,7 +40,7 @@ export default function Dashboard() {
       })
     };
     fetchQueries();
-  }, data);
+  }, []);
 
   return (
       <Grid
