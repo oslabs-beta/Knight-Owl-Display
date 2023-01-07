@@ -59,7 +59,7 @@ const Auth = (props) => {
       }
     };
 
-    fetch('/graphQL', {
+    fetch('/graphql', {
       method: 'POST',
       headers: {
         'content-type': 'application/json'

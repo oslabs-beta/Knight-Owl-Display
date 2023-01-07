@@ -3,7 +3,7 @@ const path = require('path');
 const app = express();
 const { graphqlHTTP } = require('express-graphql');
 // const { knightOwl } = require('knightowl');
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
 
 const { schema } = require('./api/schema.js')
 // ATTN - testController commented out until db is spun up and can be connected to
