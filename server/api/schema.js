@@ -119,10 +119,10 @@ const RootQueryType = new GraphQLObjectType({
         id: { type: GraphQLID },
       },
       resolve: async (parent, args, context) => {
-        console.log('getting queries')
-        if (context.res.signedIn.signedIn) {
-          const values = [ context.res.signedIn.userID ];
-          console.log('signed in with credentials: ', context.res.signedIn)
+        console.log('getting queries: ', context.req)
+        if (context.res.locals.signedIn) {
+          const values = [ context.res.locals.signedIn.userID ];
+          console.log('signed in with credentials: ', context.res.locals.signedIn)
           // Get all the queries associated with the id of the logged in user.
           const GET_QUERIES = `SELECT * FROM bad_queries WHERE user_id = $1;`
           const queries = await db.query(GET_QUERIES, values)
@@ -249,15 +249,12 @@ const RootMutationType = new GraphQLObjectType({
             console.log('user id: ', user_id);
             console.log('query 1: ', cachedQueries[0]);
             savedQueries = []
-            // const ADD_QUERY = `INSERT INTO bad_queries (user_id, querier_ip_address, query_string, rejected_by, rejected_on) VALUES ($1, $2, $3, $4, $5) RETURNING query_id;`;
-            // const values = [user_id, cachedQueries[i].querier_IP_address, cachedQueries[i].query_string, cachedQueries[i].rejected_by, cachedQueries[i].rejected_on];
             let add_queries = `INSERT INTO bad_queries (user_id, querier_ip_address, query_string, rejected_by, rejected_on) VALUES `
             const values = [];
             const inputs = []
             let inputCount = 1
             for (let i = 0; i < cachedQueries.length; i++) {
               values.push(user_id, cachedQueries[i].querier_IP_address, cachedQueries[i].query_string, cachedQueries[i].rejected_by, cachedQueries[i].rejected_on);
-              // add_queries += (i === cachedQueries.length - 1) ? `$${i + 1})` : `$${i + 1}, `;
               inputs.push(`($${inputCount++}, $${inputCount++}, $${inputCount++}, $${inputCount++}, $${inputCount++})`);
               if (i < cachedQueries.length - 1) {
                 inputs.push(', ')

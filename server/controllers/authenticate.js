@@ -3,14 +3,25 @@ const jwt = require('jsonwebtoken')
 
 module.exports = async (req, res, next) => {
   if (req.cookies.Auth) {
-    console.log('cookies: ', req.cookies);
     try {
       const auth = jwt.verify(req.cookies.Auth, process.env.TOKEN_KEY);
-      console.log('decoded: ', auth);
-      res.signedIn = auth;
+      res.locals.signedIn = auth;
+      res.set({
+        'signedIn': true
+      })
     } catch (err) {
       console.log('token error: ', err)
+      res.locals.signedIn = false;
+      res.set({
+        'signedIn' : false,
+      })
     }
+  } else {
+    res.locals.signedIn = false;
+    res.set({
+      'signedIn': false
+    })
   }
+  
   return next();
 }

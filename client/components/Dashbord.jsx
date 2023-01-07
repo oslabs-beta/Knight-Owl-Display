@@ -11,6 +11,7 @@ export default function Dashboard() {
 
   const [ data, setData ] = useState( { queries: [] } );
   const [ fetchStatus, setFetchStatus ] = useState( { fetching: true } );
+  const [ signedIn, setSignedIn ] = useState({signedIn: false});
 
   useEffect(() => {
     const GET_QUERIES = `
@@ -31,7 +32,9 @@ export default function Dashboard() {
         'http://localhost:8080/graphql', {
           query: GET_QUERIES
       }).then(response => {
+        setSignedIn({signedIn: response.headers.signedin});
         // Update the state to hold all the bad queries related to the specific user profile.
+        console.log('signin state: ', signedIn)
         const fetchedQueryData = response.data.data;
         // Change the state once the fetch returns.
         setData({ queries: fetchedQueryData.userQueries })
@@ -42,48 +45,52 @@ export default function Dashboard() {
     fetchQueries();
   }, []);
 
-  return (
-      <Grid
-        container
-        spacing={3}
-        className='full-dash'
-        direction="row"
-        flexWrap="nowrap"
-        justify="center"
-        >
-          <Grid item xs={7} >
-            <h1>Query History</h1>
-            <QueryLog queryData={!fetchStatus.fetching ? data : [{queries: {
-              querier_ip_address: 'Loading',
-              query_string: 'Loading',
-              rejected_by: 'Loading',
-              rejected_on: 'Loading'
-            }}]}/>
-          </Grid>
-
-          <Grid item xs={5}>
-            <h1>KO'd Queries Over Time</h1>
-            <Grid
-             container
-             maxWidth="lg"
-             className='full-dash'
-             direction="column"
-             flexWrap="nowrap"
-             justify="center"
-            >
-
-              <Grid item xs={12} >
-                <PieChart queryData={data}/>
-              </Grid>
-              <Grid item xs={12}>
-                {/* Insert dashboard component here */}
-                <BarChart />
-              </Grid>
-              <Grid item xs={12}>
-                <LineGraph></LineGraph>
+  // if (signedIn) {
+    return (<>
+      {/* {signedIn === true && */}
+        <Grid
+          container
+          spacing={3}
+          className='full-dash'
+          direction="row"
+          flexWrap="nowrap"
+          justify="center"
+          >
+            <Grid item xs={7} >
+              <h1>Query History</h1>
+              <QueryLog queryData={!fetchStatus.fetching ? data : [{queries: {
+                querier_ip_address: 'Loading',
+                query_string: 'Loading',
+                rejected_by: 'Loading',
+                rejected_on: 'Loading'
+              }}]}/>
+            </Grid>
+  
+            <Grid item xs={5}>
+              <h1>KO'd Queries Over Time</h1>
+              <Grid
+               container
+               maxWidth="lg"
+               className='full-dash'
+               direction="column"
+               flexWrap="nowrap"
+               justify="center"
+              >
+  
+                <Grid item xs={12} >
+                  <PieChart queryData={data}/>
+                </Grid>
+                <Grid item xs={12}>
+                  {/* Insert dashboard component here */}
+                  <BarChart />
+                </Grid>
+                <Grid item xs={12}>
+                  <LineGraph></LineGraph>
+                </Grid>
               </Grid>
             </Grid>
-          </Grid>
-      </Grid>
-  )
+        </Grid>
+      {/* }  */}
+      </>)
+
 };
