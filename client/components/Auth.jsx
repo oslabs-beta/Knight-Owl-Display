@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { redirect, Navigate } from 'react-router-dom';
 import { v4 as uuidv4 } from 'uuid';
 import { Button, Dialog, DialogActions, DialogContent, DialogContentText, TextField } from '@mui/material';
 
@@ -6,6 +7,7 @@ import { Button, Dialog, DialogActions, DialogContent, DialogContentText, TextFi
 const Auth = (props) => {
   // use the useState hook to manage state for whether the user is looking at login/auth fields and conditionally render accordingly
   const [displayState, toggleDisplay] = useState('logIn') // possible values: 'logIn', 'signUp'
+  const [redirect, setRedirect] = useState(false);
 
   // use the useState hook to track user entry into login/signup fields
   const [fieldEntries, updateField] = useState({
@@ -45,7 +47,6 @@ const Auth = (props) => {
         password: fieldEntries.password,
         organization: fieldEntries.organization,
       }
-      console.log('variables: ', variables)
     } else {
       // assumes our backend schema will have a query type signIn using
       // object type returningUser
@@ -70,7 +71,11 @@ const Auth = (props) => {
       }),
     })
     .then(data => data.json())
-    .then(response => console.log(response))
+    .then(response => {
+      if (response.data.signIn === 'Success' || response.data.createUser === 'Success') {
+        setRedirect(true);
+      }
+    })
   }
 
   // Renders either login or signup field depending on current state
@@ -109,6 +114,8 @@ const Auth = (props) => {
             <Button onClick={sendForms}>Sign Up</Button>
           </DialogActions>
           </form>}
+          {redirect === true &&
+          <Navigate to='/dashboard' replace='true' />}
     </div>
   )
 }

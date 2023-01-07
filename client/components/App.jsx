@@ -8,7 +8,7 @@ import '../styles/features.css';
 import '../styles/dashboard.css';
 import '../styles/techStack.css';
 import '../styles/team.css';
-import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 
 // Component imports
 import Features from "./Features.jsx";
@@ -21,8 +21,9 @@ import Dashboard from "./Dashbord.jsx";
 import Home from '../routes/home.jsx'
 import DashPage from "../routes/dashPage.jsx";
 import About from "../routes/about.jsx";
+import NotFound from '../routes/notFound.jsx'
 
-function App(props) {
+function App() {
   
     return (
       <BrowserRouter>
@@ -30,6 +31,7 @@ function App(props) {
           <Route path='/' element={<Home />} />
           <Route path='/dashboard' element={<DashPage />} />
           <Route path='/about' element={<About />} />
+          <Route path='*' element={<NotFound />} />
         </Routes>
       </BrowserRouter>
       // <div className="container-sg">

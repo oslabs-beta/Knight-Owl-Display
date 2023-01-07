@@ -18,20 +18,17 @@ app.use(cookieParser());
 
 app.use('/build', express.static(path.join(__dirname, '../build')));
 
-// Root
-app.get('/', (req, res, next) => {
-  console.log('in root route');
-  return next();
-}, authenticate, (req, res) => {
-  return res.status(200).sendFile(path.join(__dirname, '../index.html'));
-});
-
 // GraphQL endpoint
 app.use('/graphql', authenticate, knightOwl.costLimiter, knightOwl.rateLimiter, graphqlHTTP({
   schema,
   graphiql: true,
   validationRules: [knightOwl.depthLimit(20)]
 }));
+
+// Root
+app.get('*', authenticate, (req, res) => {
+  return res.status(200).sendFile(path.join(__dirname, '../index.html'));
+});
 
 
 // 404 Handler

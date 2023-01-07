@@ -95,7 +95,6 @@ const RootQueryType = new GraphQLObjectType({
             const result = await bcrypt.compare(args.password, hash.rows[0].password).then(result => result);
             console.log('user: ', hash.rows[0]);
             userID = hash.rows[0].id;
-
             res.cookie('Auth', jwt.sign(
               {userID: userID,
               email: args.email,
@@ -109,7 +108,7 @@ const RootQueryType = new GraphQLObjectType({
             return result;
           })
           .catch((err) => console.log(err));
-        return (user === false) ? 'Email or password incorrect.' : userID;
+        return (user === false) ? 'Email or password incorrect.' : 'Success';
       }
     },
     userQueries: {
@@ -192,7 +191,7 @@ const RootMutationType = new GraphQLObjectType({
             // Error code corresponding to a duplicate user.
             if (err.code === '23505') return 'Duplicate user found error';
           });
-          return newUserId;
+          return 'Success';
        })
        // Return either the error string of the duplicate user or the user id of the new user
        return result;
