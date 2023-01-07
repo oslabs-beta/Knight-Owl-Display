@@ -2,8 +2,8 @@ const express = require('express');
 const path = require('path');
 const app = express();
 const { graphqlHTTP } = require('express-graphql');
-const { knightOwl } = require('knightowl')
-const PORT = process.env.PORT || 3000;
+// const { knightOwl } = require('knightowl');
+const PORT = 3000;
 
 const { schema } = require('./api/schema.js')
 // ATTN - testController commented out until db is spun up and can be connected to
@@ -12,11 +12,11 @@ const { schema } = require('./api/schema.js')
 
 // Automatically parse urlencoded body content and form data from incoming requests and place it in req.body
 app.use(express.json());
-app.use(express.urlencoded());
+app.use(express.urlencoded({ extended: true }));
 
-if (process.env.NODE_ENV === "production") {
-  app.use('/build', express.static(path.join(__dirname, '../build')));
-}
+// if (process.env.NODE_ENV === "production") {
+app.use('/build', express.static(path.join(__dirname, '../build')));
+// }
 
 // Root
 app.get('/', (req, res) => {
@@ -24,10 +24,9 @@ app.get('/', (req, res) => {
 });
 
 // GraphQL endpoint
-app.use('/graphql', knightOwl.costLimiter, knightOwl.rateLimiter, graphqlHTTP({
+app.use('/graphql', graphqlHTTP({
   schema,
   graphiql: true,
-  validationRules: [knightOwl.depthLimit(20)]
 }));
 
 // 404 Handler
