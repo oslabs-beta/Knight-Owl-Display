@@ -31,14 +31,11 @@ const Auth = (props) => {
   // declare functions to send login/signup info on click to backend for authentication and authorization so user can be
   // redirected to navbar
   function sendForms() {
-    // send sa mutation request to graphql endpoint on backend
+    // sends a mutation request to graphql endpoint on backend
 
     // check if state is current login or signup so that the mutation can be shaped accordingly
     let query, variables;
     if (displayState === 'signUp') {
-      // assumes our backend schema will have a mutation createUser to register new
-      // users to db using object type NewUser
-      // attempting to return user id as result of request
       query = `mutation CreateUser($email: String, $password: String, $organization: String) {
         createUser(email: $email, password: $password, organization: $organization)
       }`; 
@@ -49,9 +46,6 @@ const Auth = (props) => {
         organization: fieldEntries.organization,
       }
     } else {
-      // assumes our backend schema will have a query type signIn using
-      // object type returningUser
-      // attempting to return user id as result of request
       query = `query SignIn($email: String, $password: String) {
         signIn(email: $email, password: $password)
       }`;
