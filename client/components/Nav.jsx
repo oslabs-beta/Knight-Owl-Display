@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { AppBar, Button, IconButton, Stack,  Toolbar, Typography, Dialog, SvgIcon } from '@mui/material';
 import GitHubIcon from '@mui/icons-material/GitHub';
 import owlLogo from '../../docs/assets/KnightOwl.png';
@@ -19,14 +20,14 @@ const NavBar = () => {
           backgroundColor: "#dfc1ae",
         }}>
           <IconButton>
-            <img className='CE-LogoImage' src={owlLogo} width='50' height='50'/>
+            <Link  style={{ textDecoration: 'none' }} to={'/'}><img className='CE-LogoImage' src={owlLogo} width='50' height='50'/></Link>
           </IconButton>
           <Typography variant='h6' component='div' sx={{flexGrow: 1}}>
-            KNIGHTOWL
+            <Link  style={{ textDecoration: 'none' }} to={'/'}>KNIGHTOWL</Link>
           </Typography>
           <Stack direction='row' spacing={2}>
             <Button color='inherit' onClick={()=>toggleAuth(true)}>Sign In</Button>
-            <Button color='inherit'>About The Team</Button>
+            <Button color='inherit'><Link  style={{ textDecoration: 'none' }} to={'about'}>About The Team</Link></Button>
             <IconButton>
             <img className='CE-LogoImage' src={npmLogo} width='50' height='50'/>
             </IconButton>

@@ -53,7 +53,7 @@ export default function Team() {
         </Grid>
         <Grid item xs={4} align="center">
         <div className='tech-sg'>
-          <img src={sequelize} className="tech-logo" style={{maxWidth: "100px", maxHeight: "100px"}}/>
+          {/* <img src={sequelize} className="tech-logo" style={{maxWidth: "100px", maxHeight: "100px"}}/> */}
         </div>
         </Grid>
         <Grid item xs={4} align="center">

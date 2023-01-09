@@ -37,9 +37,9 @@ function createData(date, querystring, ip, limiter) {
 }
 
 
-const rows = [];
 
 export default function QueryLog(props) {
+  const rows = [];
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
   
@@ -76,7 +76,7 @@ export default function QueryLog(props) {
   }
 
   return (
-    <Paper sx={{ width: '100%' }} style={{border: 'transparent', height:'90%'}}>
+    <Paper sx={{ width: '99%' }} style={{border: 'transparent', height:'100vh'}}>
       <TableContainer  sx={{ maxHeight: "100vh" }}>
         <Table stickyHeader aria-label="sticky table">
           <TableHead>

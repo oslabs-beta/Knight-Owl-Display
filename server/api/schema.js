@@ -1,3 +1,5 @@
+require('dotenv').config();
+
 const {
   GraphQLSchema,
   GraphQLObjectType,
@@ -6,10 +8,11 @@ const {
   GraphQLInt,
   GraphQLID,
   GraphQLNonNull,
-  GraphQLScalarType
+  GraphQLScalarType,
+  GraphQLInputObjectType
 } = require ('graphql');
 
-
+const jwt = require('jsonwebtoken')
 const bcrypt = require('bcrypt');
 const saltRounds = 10;
 
@@ -25,6 +28,15 @@ const UserType = new GraphQLObjectType({
     password: { type: new GraphQLNonNull(GraphQLString)},
   })
 });
+
+const VerifiedUserType = new GraphQLObjectType({
+  name: 'VerifiedUser',
+  description: 'The response sent back to client for a successful sign in request',
+  fields: () => ({
+    id: { type: GraphQLID},
+    token: { type: GraphQLID }
+  })
+})
 
 const MiddlewareType = new GraphQLObjectType({
   name: 'Middleware',
@@ -48,6 +60,16 @@ const BadQueryType = new GraphQLObjectType({
   })
 })
 
+const BatchQueryInputType = new GraphQLInputObjectType({
+  name: 'BatchQueryInput',
+  fields: () => ({
+    querier_IP_address: { type: GraphQLString},
+    query_string: { type: GraphQLString },
+    rejected_by: { type: GraphQLString },
+    rejected_on: { type: GraphQLString },
+  })
+})
+
 const RootQueryType = new GraphQLObjectType({
   name: 'Query',
   description: 'Root Query',
@@ -60,7 +82,9 @@ const RootQueryType = new GraphQLObjectType({
         email: { type: GraphQLString },
         password: { type: GraphQLString },
       },
-      resolve: async (parent, args) => {
+      resolve: async (parent, args, context) => {
+        const {res} = context;
+        console.log('context: ', res.locals);
         let userID; // later assigned with userID if found in DB and password is successfully compared by the bcrypt.compare method
         const values = [ args.email ];
         const VERIFY_USER = `SELECT password, id FROM users WHERE email = $1;`;
@@ -70,11 +94,21 @@ const RootQueryType = new GraphQLObjectType({
             // Compare the hashed password via bcrypt with the stored password in the database given the user provided email.
             const result = await bcrypt.compare(args.password, hash.rows[0].password).then(result => result);
             console.log('user: ', hash.rows[0]);
-            userID = hash.rows[0].id
+            userID = hash.rows[0].id;
+            res.cookie('Auth', jwt.sign(
+              {userID: userID,
+              email: args.email,
+              signedIn: true},
+              process.env.TOKEN_KEY,
+              {
+                expiresIn: '2h',
+              }
+            ));
+
             return result;
           })
           .catch((err) => console.log(err));
-        return (user === false) ? 'Email or password incorrect.' : userID;
+        return (user === true) ? 'Success' : 'Email or password incorrect.';
       }
     },
     userQueries: {
@@ -83,14 +117,21 @@ const RootQueryType = new GraphQLObjectType({
       args: {
         id: { type: GraphQLID },
       },
-      resolve: async (parent, args) => {
-        const values = [ args.id ];
-        // Get all the queries associated with the id of the logged in user.
-        const GET_QUERIES = `SELECT * FROM bad_queries WHERE user_id = $1;`
-        const queries = await db.query(GET_QUERIES, values)
-          .then((data) => data.rows)
-          .catch((err) => console.log(err))
-        return queries;
+      resolve: async (parent, args, context) => {
+        console.log('getting queries: ', context.req)
+        if (context.res.locals.signedIn) {
+          const values = [ context.res.locals.signedIn.userID ];
+          console.log('signed in with credentials: ', context.res.locals.signedIn)
+          // Get all the queries associated with the id of the logged in user.
+          const GET_QUERIES = `SELECT * FROM bad_queries WHERE user_id = $1;`
+          const queries = await db.query(GET_QUERIES, values)
+            .then((data) => data.rows)
+            .catch((err) => console.log(err))
+          return queries;
+        } else {
+          console.log('refusing to load queries')
+          return [{rejected_by: "User not logged in"}]
+        }
       }
     },
     // Probably won't need separate query for specific middleware
@@ -113,15 +154,15 @@ const RootMutationType = new GraphQLObjectType({
   description: 'Root Mutation',
   fields: () => ({
     createUser: {
-      type: GraphQLString,
+      type: GraphQLID,
       description: 'Registers new user',
       args: {
         email: { type: GraphQLString },
         password: { type: GraphQLString },
         organization: { type: GraphQLString },
       },
-      resolve: async (parent, args) => {
-      
+      resolve: async (parent, args, context) => {
+        const { res } = context;
         // hash password before saving
         const { password } = args;
         const result = await bcrypt.hash(password, saltRounds).then(function(hash) {
@@ -132,14 +173,25 @@ const RootMutationType = new GraphQLObjectType({
          const newUserId = db.query(ADD_USER, newUser)
           .then(newUser => {
             console.log('newUser: ', newUser.rows)
-            return newUser;
+
+            res.cookie('Auth', jwt.sign(
+              {userID: newUser.rows[0],
+              email: args.email,
+              signedIn: true},
+              process.env.TOKEN_KEY,
+              {
+                expiresIn: '2h',
+              }
+            ));
+
+            return 'Success';
           })
           .catch(err => {
             console.log(err);
             // Error code corresponding to a duplicate user.
             if (err.code === '23505') return 'Duplicate user found error';
           });
-          return newUserId;
+          return result;
        })
        // Return either the error string of the duplicate user or the user id of the new user
        return result;
@@ -156,17 +208,6 @@ const RootMutationType = new GraphQLObjectType({
         rejected_on: { type: GraphQLString },
       },
       resolve: async (parent, args) => {
-        // const newQuery = {
-        //   id: `${newQueryID++}`,
-        //   userID: args.userID,
-        //   querierIPAddress: args.querierIPAddress,
-        //   queryString: args.queryString,
-        //   rejectedBy: args.rejectedBy,
-        //   rejectedOn: args.rejectedOn,
-        // };
-        // badQueries.push(newQuery);
-        // return newQuery;
-
         // Insert SQL query to create a new query in the database
          const newQuery = [args.user_id, args.querier_ip_address, args.query_string, args.rejected_by, args.rejected_on];
          const ADD_QUERY = `INSERT INTO bad_queries (user_id, querier_ip_address, query_string, rejected_by, rejected_on) VALUES ($1, $2, $3, $4, $5) RETURNING query_id;`;
@@ -178,6 +219,52 @@ const RootMutationType = new GraphQLObjectType({
           })
           .catch(err => console.log(err));
         return newQueryId;
+      }
+    },
+    saveQueryBatch: {
+      type: GraphQLString,
+      description: 'Stores a batch of queries forwarded from KO middleware',
+      args: {
+        cachedQueries: { type: new GraphQLList(BatchQueryInputType) },
+        KOUser: { type: GraphQLString },
+        KOPass: { type: GraphQLString }
+      },
+      resolve: async (parent, args) => {
+        // cache = await args.cachedQueries.json();
+        // confirm credentials
+        const { cachedQueries, KOUser, KOPass } = args;
+        const VERIFY_USER = `SELECT password, id FROM users WHERE email = $1;`;
+        const values = [KOUser];
+        let user_id;
+        const saved = await db.query(VERIFY_USER, values)
+          .then(async (hash) => {
+            // Compare the hashed password via bcrypt with the stored password in the database given the user provided email.
+            const result = await bcrypt.compare(KOPass, hash.rows[0].password).then(result => result);
+            console.log('user: ', hash.rows[0]);
+            user_id = hash.rows[0].id
+            return result;
+          })
+          .then(async (validated) => {
+            console.log('user id: ', user_id);
+            console.log('query 1: ', cachedQueries[0]);
+            savedQueries = []
+            let add_queries = `INSERT INTO bad_queries (user_id, querier_ip_address, query_string, rejected_by, rejected_on) VALUES `
+            const values = [];
+            const inputs = []
+            let inputCount = 1
+            for (let i = 0; i < cachedQueries.length; i++) {
+              values.push(user_id, cachedQueries[i].querier_IP_address, cachedQueries[i].query_string, cachedQueries[i].rejected_by, cachedQueries[i].rejected_on);
+              inputs.push(`($${inputCount++}, $${inputCount++}, $${inputCount++}, $${inputCount++}, $${inputCount++})`);
+              if (i < cachedQueries.length - 1) {
+                inputs.push(', ')
+              }
+            }
+            inputs.forEach(inputChunk => add_queries += inputChunk);
+            await db.query(add_queries, values)
+            .then(data => 'Queries saved')
+          })
+          .catch((err) => console.log(err));
+        return saved;
       }
     }
   })
