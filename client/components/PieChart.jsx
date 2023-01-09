@@ -57,5 +57,5 @@ export function PieChart(props) {
       },
     ],
   };
-  return <Pie className='Graph' data={data} />;
+  return <Pie className='chart' data={data} />;
 }
