@@ -81,53 +81,93 @@ const costLimiterColor = {
 
 
 export function LineGraph(props) {
-  function organizeDate(num, arr) {
-    const date = new Date(num);
-    const monthNum = date.getMonth();
+  // function organizeDate(stringNum, arr) {
+  //   const date = new Date(Number(stringNum));
+  //   const monthNum = date.getMonth();
   
-    if (monthNum === 0) arr[0]++;
-    if (monthNum === 1) arr[1]++;
-    if (monthNum === 2) arr[2]++;
-    if (monthNum === 3) arr[3]++;
-    if (monthNum === 4) arr[4]++;
-    if (monthNum === 5) arr[5]++;
-    if (monthNum === 6) arr[6]++;
-    if (monthNum === 7) arr[7]++;
-    if (monthNum === 8) arr[8]++;
-    if (monthNum === 9) arr[9]++;
-    if (monthNum === 10) arr[10]++;
-    if (monthNum === 11) arr[11]++;
+  //   if (monthNum === 0) arr[0]++;
+  //   if (monthNum === 1) arr[1]++;
+  //   if (monthNum === 2) arr[2]++;
+  //   if (monthNum === 3) arr[3]++;
+  //   if (monthNum === 4) arr[4]++;
+  //   if (monthNum === 5) arr[5]++;
+  //   if (monthNum === 6) arr[6]++;
+  //   if (monthNum === 7) arr[7]++;
+  //   if (monthNum === 8) arr[8]++;
+  //   if (monthNum === 9) arr[9]++;
+  //   if (monthNum === 10) arr[10]++;
+  //   if (monthNum === 11) arr[11]++;
   
-    return arr;
-  }
+  //   return arr;
+  
 
-  const lineGraphData = (fetchedData) => {
-    let depthArr = [0,0,0,0,0,0,0,0,0,0,0,0];
-    let costArr = [0,0,0,0,0,0,0,0,0,0,0,0];
-    let rateArr = [0,0,0,0,0,0,0,0,0,0,0,0];
-    let test1 = [0];
-    let test2 = [0];
-    let test3 = [0];
-
+  const LineGraphData = (fetchedData) => {
+    const depthArr = [0,0,0,0,0,0,0,0,0,0,0,0];
+    const costArr = [0,0,0,0,0,0,0,0,0,0,0,0];
+    const rateArr = [0,0,0,0,0,0,0,0,0,0,0,0];
+    
     console.log(fetchedData);
     fetchedData.queries.forEach(query => {
       if (query.rejected_by === 'depth_limiter') {
-        // depthArr = organizeDate(fetchedData.queries.rejected_on, depthArr);
-        test1[0] ++;
+        
+        
+        const date = new Date(Number(query.rejected_on));
+        const monthNum = date.getMonth();
+      
+        if (monthNum === 0) depthArr[0]++;
+        if (monthNum === 1) depthArr[1]++;
+        if (monthNum === 2) depthArr[2]++;
+        if (monthNum === 3) depthArr[3]++;
+        if (monthNum === 4) depthArr[4]++;
+        if (monthNum === 5) depthArr[5]++;
+        if (monthNum === 6) depthArr[6]++;
+        if (monthNum === 7) depthArr[7]++;
+        if (monthNum === 8) depthArr[8]++;
+        if (monthNum === 9) depthArr[9]++;
+        if (monthNum === 10) depthArr[10]++;
+        if (monthNum === 11) depthArr[11]++;
+       
       }
       if (query.rejected_by === 'cost_limiter') {
-        // costArr = organizeDate(fetchedData.queries.rejected_on, costArr);
-        test2[0] ++;
+        const date = new Date(Number(query.rejected_on));
+        const monthNum = date.getMonth();
+      
+        if (monthNum === 0) costArr[0]++;
+        if (monthNum === 1) costArr[1]++;
+        if (monthNum === 2) costArr[2]++;
+        if (monthNum === 3) costArr[3]++;
+        if (monthNum === 4) costArr[4]++;
+        if (monthNum === 5) costArr[5]++;
+        if (monthNum === 6) costArr[6]++;
+        if (monthNum === 7) costArr[7]++;
+        if (monthNum === 8) costArr[8]++;
+        if (monthNum === 9) costArr[9]++;
+        if (monthNum === 10) costArr[10]++;
+        if (monthNum === 11) costArr[11]++;
+        
       };
       if (query.rejected_by === 'rate_limiter') {
-        // rateArr = organizeDate(fetchedData.queries.rejected_on, rateArr);
-        test3[0] ++;
+        const date = new Date(Number(query.rejected_on));
+        const monthNum = date.getMonth();
+      
+        if (monthNum === 0) rateArr[0]++;
+        if (monthNum === 1) rateArr[1]++;
+        if (monthNum === 2) rateArr[2]++;
+        if (monthNum === 3) rateArr[3]++;
+        if (monthNum === 4) rateArr[4]++;
+        if (monthNum === 5) rateArr[5]++;
+        if (monthNum === 6) rateArr[6]++;
+        if (monthNum === 7) rateArr[7]++;
+        if (monthNum === 8) rateArr[8]++;
+        if (monthNum === 9) rateArr[9]++;
+        if (monthNum === 10) rateArr[10]++;
+        if (monthNum === 11) rateArr[11]++;
+        
       };
 
     });
     
-    // return [depthArr, costArr, rateArr];
-    return [test1, test2, test3];
+    return [depthArr, rateArr, costArr];
 
   };
   
@@ -139,21 +179,21 @@ export function LineGraph(props) {
     datasets: [
       {
         label: 'Depth Limiter',
-        data: lineGraphData(props.queryData)[0],
+        data: LineGraphData(props.queryData)[0],
         borderColor: depthLimiterColor.border,
         backgroundColor: depthLimiterColor.background,
         yAxisID: 'y',
       },
       {
         label: 'Rate Limiter',
-        data: lineGraphData(props.queryData)[1],
+        data: LineGraphData(props.queryData)[1],
         borderColor: rateLimiterColor.border,
         backgroundColor: rateLimiterColor.background,
         yAxisID: 'y1',
       },
       {
         label: 'Cost Limiter',
-        data: lineGraphData(props.queryData)[2],
+        data: LineGraphData(props.queryData)[2],
         borderColor: costLimiterColor.border,
         backgroundColor: costLimiterColor.background,
         yAxisID: 'y1',
