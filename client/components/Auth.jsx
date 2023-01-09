@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { redirect, Navigate } from 'react-router-dom';
 import { v4 as uuidv4 } from 'uuid';
 import { Button, Dialog, DialogActions, DialogContent, DialogContentText, TextField } from '@mui/material';
 
@@ -6,6 +7,8 @@ import { Button, Dialog, DialogActions, DialogContent, DialogContentText, TextFi
 const Auth = (props) => {
   // use the useState hook to manage state for whether the user is looking at login/auth fields and conditionally render accordingly
   const [displayState, toggleDisplay] = useState('logIn') // possible values: 'logIn', 'signUp'
+  const [redirect, setRedirect] = useState(false);
+  const [badSignIn, setBadSignIn] = useState(false);
 
   // use the useState hook to track user entry into login/signup fields
   const [fieldEntries, updateField] = useState({
@@ -28,14 +31,11 @@ const Auth = (props) => {
   // declare functions to send login/signup info on click to backend for authentication and authorization so user can be
   // redirected to navbar
   function sendForms() {
-    // send sa mutation request to graphql endpoint on backend
+    // sends a mutation request to graphql endpoint on backend
 
     // check if state is current login or signup so that the mutation can be shaped accordingly
     let query, variables;
     if (displayState === 'signUp') {
-      // assumes our backend schema will have a mutation createUser to register new
-      // users to db using object type NewUser
-      // attempting to return user id as result of request
       query = `mutation CreateUser($email: String, $password: String, $organization: String) {
         createUser(email: $email, password: $password, organization: $organization)
       }`; 
@@ -45,11 +45,7 @@ const Auth = (props) => {
         password: fieldEntries.password,
         organization: fieldEntries.organization,
       }
-      console.log('variables: ', variables)
     } else {
-      // assumes our backend schema will have a query type signIn using
-      // object type returningUser
-      // attempting to return user id as result of request
       query = `query SignIn($email: String, $password: String) {
         signIn(email: $email, password: $password)
       }`;
@@ -70,7 +66,13 @@ const Auth = (props) => {
       }),
     })
     .then(data => data.json())
-    .then(response => console.log(response))
+    .then(response => {
+      if (response.data.signIn === 'Success' || response.data.createUser === 'Success') {
+        setRedirect(true);
+      } else {
+        setBadSignIn(true);
+      }
+    })
   }
 
   // Renders either login or signup field depending on current state
@@ -109,6 +111,10 @@ const Auth = (props) => {
             <Button onClick={sendForms}>Sign Up</Button>
           </DialogActions>
           </form>}
+          {badSignIn === true &&
+          <p>Failed to sign in. Please try again.</p>}
+          {redirect === true &&
+          <Navigate to='/dashboard' replace='true' />}
     </div>
   )
 }
