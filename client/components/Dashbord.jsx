@@ -7,6 +7,7 @@ import { LineGraph } from './Graph.jsx';
 import QueryLog from './QueryLog.jsx';
 import axios from 'axios';
 import { PieChart } from './PieChart.jsx';
+import owlUpsideDown from '../../docs/assets/upsideDownOwl.png';
 
 export default function Dashboard(props) {
 
@@ -52,6 +53,9 @@ export default function Dashboard(props) {
   return (<>
     {signedIn.signedIn === "false" && 
     <Navigate to={'/'} replace={'true'} />}
+    <div style={{display:'flex', justifyContent:'center'}}>
+    <img className='hidden-owl' src={owlUpsideDown} style={{height: '60px'}}/>
+    </div>
     <Grid
       container
       spacing={3}
@@ -61,7 +65,7 @@ export default function Dashboard(props) {
       justify="center"
       >
         <Grid item xs={7} >
-          <h1>Query History</h1>
+          <h1>Hi, Welcome Back</h1>
           <QueryLog queryData={!fetchStatus.fetching ? data : [{queries: {
             querier_ip_address: 'Loading',
             query_string: 'Loading',
