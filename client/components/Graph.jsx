@@ -76,49 +76,83 @@ const costLimiterColor = {
   border: 'rgba(54, 162, 235, 1)',
 };
 
-// Placeholder Data for Charts
 
-const randomArrayPopulate = (numEl) => {
-  const arr = [];
-  for(let i = 0; i < numEl; i++) {
-    const randomNum = Math.ceil(Math.random()*1000);
-    arr.push(randomNum);
+
+
+
+export function LineGraph(props) {
+  function organizeDate(num, arr) {
+    const date = new Date(num);
+    const monthNum = date.getMonth();
+  
+    if (monthNum === 0) arr[0]++;
+    if (monthNum === 1) arr[0]++;
+    if (monthNum === 2) arr[0]++;
+    if (monthNum === 3) arr[0]++;
+    if (monthNum === 4) arr[0]++;
+    if (monthNum === 5) arr[0]++;
+    if (monthNum === 6) arr[0]++;
+    if (monthNum === 7) arr[0]++;
+    if (monthNum === 8) arr[0]++;
+    if (monthNum === 9) arr[0]++;
+    if (monthNum === 10) arr[0]++;
+    if (monthNum === 11) arr[0]++;
+  
+    return arr;
   }
-  return arr;
-}
 
-const depthArr = randomArrayPopulate(12);
-const costArr = randomArrayPopulate(12);
-const rateArr = randomArrayPopulate(12);
+  const lineGraphData = (fetchedData) => {
+    const depthArr = [0,0,0,0,0,0,0,0,0,0,0,0];
+    const costArr = [0,0,0,0,0,0,0,0,0,0,0,0];
+    const rateArr = [0,0,0,0,0,0,0,0,0,0,0,0];
+
+    console.log(fetchedData);
+    // fetchedData.forEach(query => {
+    //   if (query.rejected_by === 'depth_limiter') {
+    //     depthArr = organizeDate(fetchedData.rejected_on, depthArr);
+    //   };
+    //   if (query.rejected_by === 'cost_limiter') {
+    //     costArr = organizeDate(fetchedData.rejected_on, costArr);
+    //   };
+    //   if (query.rejected_by === 'rate_limiter') {
+    //     rateArr = organizeDate(fetchedData.rejected_on, rateArr);
+    //   };
+
+    // })
+
+    return [depthArr, costArr, rateArr];
+
+  };
+  
 
 
-export const data = {
-  labels,
-  datasets: [
-    {
-      label: 'Depth Limiter',
-      data: depthArr,
-      borderColor: depthLimiterColor.border,
-      backgroundColor: depthLimiterColor.background,
-      yAxisID: 'y',
-    },
-    {
-      label: 'Rate Limiter',
-      data: costArr,
-      borderColor: rateLimiterColor.border,
-      backgroundColor: rateLimiterColor.background,
-      yAxisID: 'y1',
-    },
-    {
-      label: 'Cost Limiter',
-      data: rateArr,
-      borderColor: costLimiterColor.border,
-      backgroundColor: costLimiterColor.background,
-      yAxisID: 'y1',
-    },
-  ],
-};
+  const data = {
+    labels,
+    datasets: [
+      {
+        label: 'Depth Limiter',
+        data: lineGraphData(props.queryData)[0],
+        borderColor: depthLimiterColor.border,
+        backgroundColor: depthLimiterColor.background,
+        yAxisID: 'y',
+      },
+      {
+        label: 'Rate Limiter',
+        data: lineGraphData(props.queryData)[1],
+        borderColor: rateLimiterColor.border,
+        backgroundColor: rateLimiterColor.background,
+        yAxisID: 'y1',
+      },
+      {
+        label: 'Cost Limiter',
+        data: lineGraphData(props.queryData)[2],
+        borderColor: costLimiterColor.border,
+        backgroundColor: costLimiterColor.background,
+        yAxisID: 'y1',
+      },
+    ],
+  };
 
-export function LineGraph() {
+
   return <Line className='Graph' options={options} data={data} />;
 }
