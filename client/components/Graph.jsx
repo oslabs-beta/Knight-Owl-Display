@@ -86,17 +86,17 @@ export function LineGraph(props) {
     const monthNum = date.getMonth();
   
     if (monthNum === 0) arr[0]++;
-    if (monthNum === 1) arr[0]++;
-    if (monthNum === 2) arr[0]++;
-    if (monthNum === 3) arr[0]++;
-    if (monthNum === 4) arr[0]++;
-    if (monthNum === 5) arr[0]++;
-    if (monthNum === 6) arr[0]++;
-    if (monthNum === 7) arr[0]++;
-    if (monthNum === 8) arr[0]++;
-    if (monthNum === 9) arr[0]++;
-    if (monthNum === 10) arr[0]++;
-    if (monthNum === 11) arr[0]++;
+    if (monthNum === 1) arr[1]++;
+    if (monthNum === 2) arr[2]++;
+    if (monthNum === 3) arr[3]++;
+    if (monthNum === 4) arr[4]++;
+    if (monthNum === 5) arr[5]++;
+    if (monthNum === 6) arr[6]++;
+    if (monthNum === 7) arr[7]++;
+    if (monthNum === 8) arr[8]++;
+    if (monthNum === 9) arr[9]++;
+    if (monthNum === 10) arr[10]++;
+    if (monthNum === 11) arr[11]++;
   
     return arr;
   }
@@ -105,25 +105,33 @@ export function LineGraph(props) {
     let depthArr = [0,0,0,0,0,0,0,0,0,0,0,0];
     let costArr = [0,0,0,0,0,0,0,0,0,0,0,0];
     let rateArr = [0,0,0,0,0,0,0,0,0,0,0,0];
+    let test1 = [0];
+    let test2 = [0];
+    let test3 = [0];
 
     console.log(fetchedData);
     fetchedData.queries.forEach(query => {
       if (query.rejected_by === 'depth_limiter') {
-        depthArr = organizeDate(fetchedData.rejected_on, depthArr);
-      };
+        // depthArr = organizeDate(fetchedData.queries.rejected_on, depthArr);
+        test1[0] ++;
+      }
       if (query.rejected_by === 'cost_limiter') {
-        costArr = organizeDate(fetchedData.rejected_on, costArr);
+        // costArr = organizeDate(fetchedData.queries.rejected_on, costArr);
+        test2[0] ++;
       };
       if (query.rejected_by === 'rate_limiter') {
-        rateArr = organizeDate(fetchedData.rejected_on, rateArr);
+        // rateArr = organizeDate(fetchedData.queries.rejected_on, rateArr);
+        test3[0] ++;
       };
 
-    })
-
-    return [depthArr, costArr, rateArr];
+    });
+    
+    // return [depthArr, costArr, rateArr];
+    return [test1, test2, test3];
 
   };
   
+
 
 
   const data = {
