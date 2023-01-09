@@ -89,7 +89,7 @@ export default function Dashboard(props) {
               <BarChart />
             </Grid>
             <Grid item xs={12}>
-              <LineGraph></LineGraph>
+              <LineGraph queryData={data}></LineGraph>
             </Grid>
           </Grid>
         </Grid>

@@ -102,23 +102,23 @@ export function LineGraph(props) {
   }
 
   const lineGraphData = (fetchedData) => {
-    const depthArr = [0,0,0,0,0,0,0,0,0,0,0,0];
-    const costArr = [0,0,0,0,0,0,0,0,0,0,0,0];
-    const rateArr = [0,0,0,0,0,0,0,0,0,0,0,0];
+    let depthArr = [0,0,0,0,0,0,0,0,0,0,0,0];
+    let costArr = [0,0,0,0,0,0,0,0,0,0,0,0];
+    let rateArr = [0,0,0,0,0,0,0,0,0,0,0,0];
 
     console.log(fetchedData);
-    // fetchedData.forEach(query => {
-    //   if (query.rejected_by === 'depth_limiter') {
-    //     depthArr = organizeDate(fetchedData.rejected_on, depthArr);
-    //   };
-    //   if (query.rejected_by === 'cost_limiter') {
-    //     costArr = organizeDate(fetchedData.rejected_on, costArr);
-    //   };
-    //   if (query.rejected_by === 'rate_limiter') {
-    //     rateArr = organizeDate(fetchedData.rejected_on, rateArr);
-    //   };
+    fetchedData.queries.forEach(query => {
+      if (query.rejected_by === 'depth_limiter') {
+        depthArr = organizeDate(fetchedData.rejected_on, depthArr);
+      };
+      if (query.rejected_by === 'cost_limiter') {
+        costArr = organizeDate(fetchedData.rejected_on, costArr);
+      };
+      if (query.rejected_by === 'rate_limiter') {
+        rateArr = organizeDate(fetchedData.rejected_on, rateArr);
+      };
 
-    // })
+    })
 
     return [depthArr, costArr, rateArr];
 
