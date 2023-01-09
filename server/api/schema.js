@@ -123,7 +123,7 @@ const RootQueryType = new GraphQLObjectType({
           const values = [ context.res.locals.signedIn.userID ];
           console.log('signed in with credentials: ', context.res.locals.signedIn)
           // Get all the queries associated with the id of the logged in user.
-          const GET_QUERIES = `SELECT * FROM bad_queries WHERE user_id = $1;`
+          const GET_QUERIES = `SELECT * FROM bad_queries WHERE user_id = $1 ORDER BY rejected_on DESC;`
           const queries = await db.query(GET_QUERIES, values)
             .then((data) => data.rows)
             .catch((err) => console.log(err))
