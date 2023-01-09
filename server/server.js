@@ -20,7 +20,7 @@ app.use('/build', express.static(path.join(__dirname, '../build')));
 // }
 
 // GraphQL endpoint
-app.use('/graphql', graphqlHTTP({
+app.use('/graphql', authenticate, graphqlHTTP({
   schema
 }));
 
