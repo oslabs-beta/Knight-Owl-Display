@@ -27,6 +27,7 @@ const costLimiterColor = {
 export function PieChart(props) {
   const pieChartCounter = (fetchedData) => {
       const counts = [0, 0, 0];
+      console.log('fetchedData: ', fetchedData.queries[0]);
       fetchedData.queries.forEach(query => {
         if (query.rejected_by === 'depth_limiter') counts[0]++;
         if (query.rejected_by === 'rate_limiter') counts[1]++;
@@ -40,7 +41,6 @@ export function PieChart(props) {
     datasets: [
       {
         label: 'Bounced Queries by Limiter',
-        // Placeholder data
         data: pieChartCounter(props.queryData),
         backgroundColor: [
           depthLimiterColor.background,
