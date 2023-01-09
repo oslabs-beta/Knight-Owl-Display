@@ -29,11 +29,21 @@ const columns = [
 
 function createData(date, querystring, ip, limiter) {
   let color;
-  if (limiter === 'depth_limiter') color = 'seagreen';
-  if (limiter === 'rate_limiter') color = 'dodgerblue';
-  if (limiter === 'cost_limiter') color = 'firebrick';
+  let name;
+  if (limiter === 'depth_limiter'){
+     color = 'seagreen';
+     name = 'Depth Limiter'
+    }
+  if (limiter === 'rate_limiter') {
+    color = 'dodgerblue'
+    name = 'Rate Limiter'
+  };
+  if (limiter === 'cost_limiter') {
+    color = 'firebrick'
+    name = 'Cost Limiter'
+  };
   
-  return { date, querystring, ip, limiter, color };
+  return { date, querystring, ip, name, color };
 }
 
 
@@ -109,7 +119,7 @@ export default function QueryLog(props) {
                     <TableCell>{row.querystring}</TableCell>
                     <TableCell align="right">{row.ip}</TableCell>
                     <TableCell id="limiter" align="right" style={{ color: row.color }}>
-                      {row.limiter}
+                      {row.name}
                     </TableCell>
                   </TableRow>
                 );
