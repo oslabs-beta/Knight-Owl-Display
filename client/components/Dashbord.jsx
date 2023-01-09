@@ -90,7 +90,7 @@ export default function Dashboard(props) {
             </Grid>
             <Grid item xs={12}>
               {/* Insert dashboard component here */}
-              <BarChart />
+              {/* <BarChart /> */}
             </Grid>
             <Grid item xs={12}>
               <LineGraph queryData={data}></LineGraph>
