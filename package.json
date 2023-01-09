@@ -3,9 +3,13 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
+  "engines": {
+    "node": "16.16.0",
+    "npm": "8.11.0"
+  },
   "scripts": {
-    "start": "nodemon server/server.js",
-    "build": "webpack",
+    "start": "node server/server.js",
+    "build": "webpack --mode production",
     "dev": "nodemon server/server.js & webpack serve --open"
   },
   "author": "Ona Narbutas, Simon Grigenas, Caitlin Ervine, Jackson Kalmbach",

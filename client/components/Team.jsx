@@ -2,7 +2,7 @@ import React from 'react';
 import { Grid } from "@mui/material";
 
 // Headshot images imported.
-import caitlinHeadshot from '../../docs/assets/caitlin-headshot.JPG';
+import caitlinHeadshot from '../../docs/assets/caitlin-headshot.jpg';
 import jacksonHeadshot from '../../docs/assets/jackson-headshot.jpg';
 import onaHeadshot from '../../docs/assets/ona-headshot.png';
 import simonHeadshot from '../../docs/assets/simon-headshot.jpg';
