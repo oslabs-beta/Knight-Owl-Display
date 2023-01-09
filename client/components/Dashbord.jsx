@@ -32,7 +32,7 @@ export default function Dashboard(props) {
     const fetchQueries = async () => {
       // Call the GraphQL API with the given query string for all bad queries.
       const queryResult = await axios.post(
-        'http://localhost:8080/graphql', {
+        '/graphql', {
           query: GET_QUERIES
       }).then(response => {
         console.log('response headers: ', response.headers)
