@@ -115,7 +115,10 @@ const Auth = (props) => {
             <br />
           </DialogContent>
           <DialogActions>
-            <Button variant='contained' onClick={sendForms}>Sign In</Button>
+            <Button variant='contained' onClick={sendForms} style={{
+            backgroundColor: "#262626",
+            color: "#FFFF"
+          }}>Sign In</Button>
           </DialogActions>
         </form>
       :
@@ -167,7 +170,10 @@ const Auth = (props) => {
             <br />
           </DialogContent>
           <DialogActions>
-            <Button variant='contained' onClick={sendForms}>Sign Up</Button>
+            <Button style={{
+            backgroundColor: "#262626",
+            color: "#FFFF"
+          }} variant='contained' onClick={sendForms}>Sign Up</Button>
           </DialogActions>
           {passwordMismatch.mismatch === true &&
           <p className='warn'>Passwords do not match.</p>}
