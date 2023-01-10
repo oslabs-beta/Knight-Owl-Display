@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { redirect, Navigate } from 'react-router-dom';
 import { v4 as uuidv4 } from 'uuid';
-import { Button, Dialog, DialogActions, DialogContent, DialogContentText, TextField } from '@mui/material';
+import { Button, ButtonGroup, Dialog, DialogActions, DialogContent, DialogContentText, TextField} from '@mui/material';
 
 // rendered by NavBar when Sign In clicked
 const Auth = (props) => {
@@ -18,19 +18,27 @@ const Auth = (props) => {
     organization: '',
   })
 
+  // track whether password fields match in signup form
+  const [passwordMismatch, setPasswordMismatch] = useState({mismatch: false});
+
   // declare function to update fieldEntries state per user input in text fields
-  function trackInputToState(target) {
+  async function trackInputToState(target) {
     const fieldToUpdate = target.id;
     const passInUpdate = {...fieldEntries};
 
     passInUpdate[fieldToUpdate] = target.value;
-    updateField(passInUpdate);
+    updateField(passInUpdate)
   }
 
   // declare functions to send login/signup info on click to backend for authentication and authorization so user can be
   // redirected to navbar
   function sendForms() {
     // sends a mutation request to graphql endpoint on backend
+    if (displayState === 'signUp' && fieldEntries.password !== fieldEntries.confirmPassword) {
+      setPasswordMismatch({mismatch: true})
+      return;
+    };
+
     // check if state is current login or signup so that the mutation can be shaped accordingly
     let query, variables;
     if (displayState === 'signUp') {
@@ -76,40 +84,96 @@ const Auth = (props) => {
   // Renders either login or signup field depending on current state
   return (
     <div className='ON-Auth'>
-      <Button onClick={() => toggleDisplay('logIn')}>Sign In</Button>
-      <Button onClick={() => toggleDisplay('signUp')}>Create New Account</Button>
+      <ButtonGroup variant='text' size='large' sx={{ display: 'grid', gridTemplateColumns: '1fr 1fr' }}>
+        <Button onClick={() => toggleDisplay('logIn')} id='sign-in' disabled={displayState === 'logIn'}>Sign In</Button>
+        <Button onClick={() => toggleDisplay('signUp')} id='sign-up' disabled={displayState === 'signUp'}>Create New Account</Button>
+      </ButtonGroup>
       <br/>
       {(displayState === 'logIn')
       ?
         <form className='ON-log-in-form'>
-          <DialogContent>
-            <TextField type='text' id='email' placeholder='Email Address' onChange={(e) => trackInputToState(e.target)}></TextField>
+          <DialogContent className='login-content'>
+            <TextField 
+              fullWidth
+              variant='standard'
+              margin='normal'
+              type='text' 
+              id='email' 
+              placeholder='Email Address'
+              onChange={(e) => trackInputToState(e.target)}>
+            </TextField>
             <br />
-            <TextField type='text' id='password' placeholder='Password' onChange={(e) => trackInputToState(e.target)}></TextField>
+            <TextField 
+              fullWidth
+              variant='standard'
+              margin='normal'
+              type='password' 
+              id='password' 
+              placeholder='Password' 
+              onChange={(e) => trackInputToState(e.target)}>
+            </TextField>
             <br />
           </DialogContent>
           <DialogActions>
-            <Button onClick={sendForms}>Sign In</Button>
+            <Button variant='contained' onClick={sendForms}>Sign In</Button>
           </DialogActions>
         </form>
       :
         <form className='ON-sign-up-form'>
           <DialogContent>
-            <TextField type='text' id='email' placeholder='Email Address' onChange={(e) => trackInputToState(e.target)}></TextField>
+            <TextField 
+              fullWidth
+              variant='standard'
+              margin='normal'
+              type='text' 
+              id='email' 
+              className='auth-input' 
+              placeholder='Email Address' 
+              onChange={(e) => trackInputToState(e.target)}>
+            </TextField>
             <br />
-            <TextField type='text' id='password' placeholder='Password' onChange={(e) => trackInputToState(e.target)}></TextField>
+            <TextField 
+              fullWidth
+              variant='standard'
+              margin='normal'
+              type='password' 
+              id='password' 
+              className='auth-input' 
+              placeholder='Password' 
+              onChange={(e) => trackInputToState(e.target)}>
+            </TextField>
             <br />
-            <TextField type='text' id='confirm-password' placeholder='Confirm Password' onChange={(e) => trackInputToState(e.target)}></TextField>
+            <TextField
+              fullWidth
+              variant='standard'
+              margin='normal'
+              type='password' 
+              id='confirmPassword' 
+              className='auth-input' 
+              placeholder='Confirm Password' 
+              onChange={(e) => trackInputToState(e.target)}>
+            </TextField>
             <br />
-            <TextField type='text' id='organization' placeholder='Organization' onChange={(e) => trackInputToState(e.target)}></TextField>
+            <TextField 
+              fullWidth 
+              variant='standard'
+              margin='normal'
+              type='text' 
+              id='organization' 
+              className='auth-input' 
+              placeholder='Name' 
+              onChange={(e) => trackInputToState(e.target)}>
+            </TextField>
             <br />
           </DialogContent>
           <DialogActions>
-            <Button onClick={sendForms}>Sign Up</Button>
+            <Button variant='contained' onClick={sendForms}>Sign Up</Button>
           </DialogActions>
+          {passwordMismatch.mismatch === true &&
+          <p className='warn'>Passwords do not match.</p>}
           </form>}
           {badSignIn === true &&
-          <p>Failed to sign in. Please try again.</p>}
+          <p className='warn'>Failed to sign in. Please try again.</p>}
           {redirect === true &&
           <Navigate to='/dashboard' replace='true' />}
     </div>
