@@ -33,7 +33,6 @@ export default function Dashboard(props) {
         '/graphql', {
           query: GET_QUERIES
       }).then(response => {
-        console.log('response headers: ', response.headers)
         setSignedIn({signedIn: response.headers.signedin});
         // Update the state to hold all the bad queries related to the specific user profile.
         // console.log('signin state: ', 'test')

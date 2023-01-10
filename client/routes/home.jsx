@@ -18,7 +18,7 @@ import NavBar from "../components/Nav.jsx";
 import Problem from "../components/Problem.jsx";
 import Team from "../components/Team.jsx";
 import TechStack from "../components/TechStack.jsx";
-import Dashboard from "../components/Dashbord.jsx";
+import Dashboard from "../components/Dashboard.jsx";
 import DashPage from './dashPage.jsx';
 
 function Home(props) {
