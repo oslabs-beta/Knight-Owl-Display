@@ -11,8 +11,7 @@ const options = {
       text: 'Queries By Type',
     }
   }
-}
-
+};
 
 const depthLimiterColor = {
   // Currently Green
@@ -33,11 +32,9 @@ const costLimiterColor = {
   border: 'rgba(54, 162, 235, 1)',
 };
 
-
 export function PieChart(props) {
   const pieChartCounter = (fetchedData) => {
       const counts = [0, 0, 0];
-      console.log('fetchedData: ', fetchedData.queries[0]);
       fetchedData.queries.forEach(query => {
         if (query.rejected_by === 'depth_limiter') counts[0]++;
         if (query.rejected_by === 'rate_limiter') counts[1]++;

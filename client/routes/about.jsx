@@ -7,6 +7,6 @@ function About(props) {
     <NavBar />
     <Team />
   </>)
-}
+};
 
 export default About

@@ -84,7 +84,6 @@ const RootQueryType = new GraphQLObjectType({
       },
       resolve: async (parent, args, context) => {
         const {res} = context;
-        console.log('context: ', res.locals);
         let userID; // later assigned with userID if found in DB and password is successfully compared by the bcrypt.compare method
         const values = [ args.email ];
         const VERIFY_USER = `SELECT password, id FROM users WHERE email = $1;`;
@@ -93,7 +92,6 @@ const RootQueryType = new GraphQLObjectType({
           .then(async (hash) => {
             // Compare the hashed password via bcrypt with the stored password in the database given the user provided email.
             const result = await bcrypt.compare(args.password, hash.rows[0].password).then(result => result);
-            console.log('user: ', hash.rows[0]);
             userID = hash.rows[0].id;
             res.cookie('Auth', jwt.sign(
               {userID: userID,
@@ -118,10 +116,8 @@ const RootQueryType = new GraphQLObjectType({
         id: { type: GraphQLID },
       },
       resolve: async (parent, args, context) => {
-        console.log('getting queries: ', context.req)
         if (context.res.locals.signedIn) {
           const values = [ context.res.locals.signedIn.userID ];
-          console.log('signed in with credentials: ', context.res.locals.signedIn)
           // Get all the queries associated with the id of the logged in user.
           const GET_QUERIES = `SELECT * FROM bad_queries WHERE user_id = $1 ORDER BY rejected_on DESC;`
           const queries = await db.query(GET_QUERIES, values)
@@ -129,7 +125,6 @@ const RootQueryType = new GraphQLObjectType({
             .catch((err) => console.log(err))
           return queries;
         } else {
-          console.log('refusing to load queries')
           return [{rejected_by: "User not logged in"}]
         }
       }
@@ -172,8 +167,6 @@ const RootMutationType = new GraphQLObjectType({
          // Add the newUser to the database and if there is already a user with the following email then return the error string
          const newUserId = db.query(ADD_USER, newUser)
           .then(newUser => {
-            console.log('newUser: ', newUser.rows)
-
             res.cookie('Auth', jwt.sign(
               {userID: newUser.rows[0],
               email: args.email,
@@ -214,7 +207,6 @@ const RootMutationType = new GraphQLObjectType({
       
          const newQueryId = await db.query(ADD_QUERY, newQuery)
           .then(data => {
-            console.log('newQuery: ', data.rows[0])
             return data.rows[0];
           })
           .catch(err => console.log(err));
@@ -240,13 +232,10 @@ const RootMutationType = new GraphQLObjectType({
           .then(async (hash) => {
             // Compare the hashed password via bcrypt with the stored password in the database given the user provided email.
             const result = await bcrypt.compare(KOPass, hash.rows[0].password).then(result => result);
-            console.log('user: ', hash.rows[0]);
             user_id = hash.rows[0].id
             return result;
           })
           .then(async (validated) => {
-            console.log('user id: ', user_id);
-            console.log('query 1: ', cachedQueries[0]);
             savedQueries = []
             let add_queries = `INSERT INTO bad_queries (user_id, querier_ip_address, query_string, rejected_by, rejected_on) VALUES `
             const values = [];
