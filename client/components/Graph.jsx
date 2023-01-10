@@ -36,6 +36,9 @@ export const options = {
       text: 'Queries Over Time',
     },
   },
+  layout: {
+    padding: 20
+  },
   scales: {
     y: {
       type: 'linear',

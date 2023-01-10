@@ -10,6 +10,9 @@ const options = {
       display: true,
       text: 'Queries By Type',
     }
+  },
+  layout: {
+    padding: 20
   }
 };
 
