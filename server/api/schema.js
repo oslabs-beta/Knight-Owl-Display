@@ -159,35 +159,26 @@ const RootMutationType = new GraphQLObjectType({
       resolve: async (parent, args, context) => {
         const { res } = context;
         // hash password before saving
-        const { password } = args;
-        const result = await bcrypt.hash(password, saltRounds).then(function(hash) {
-         // Insert SQL query to create a new user in the database
-         const newUser = [args.email, hash, args.organization];
-         const ADD_USER = `INSERT INTO users (email, password, organization) VALUES ($1, $2, $3) RETURNING id;`;
-         // Add the newUser to the database and if there is already a user with the following email then return the error string
-         const newUserId = db.query(ADD_USER, newUser)
-          .then(newUser => {
+        const { email, password, organization } = args;
+        const hash = await bcrypt.hash(password, saltRounds);
+        const newUser = [email, hash, organization];
+        const ADD_USER = `INSERT INTO users (email, password, organization) VALUES ($1, $2, $3) RETURNING id;`;
+        return db.query(ADD_USER, newUser)
+          .then(newUserId => {
             res.cookie('Auth', jwt.sign(
-              {userID: newUser.rows[0],
-              email: args.email,
-              signedIn: true},
+              {
+                userID: newUserId.rows[0].id,
+                email: email,
+                signedIn: true,
+              },
               process.env.TOKEN_KEY,
               {
                 expiresIn: '2h',
               }
             ));
-
-            return 'Success';
+            return 'Success'
           })
-          .catch(err => {
-            console.log(err);
-            // Error code corresponding to a duplicate user.
-            if (err.code === '23505') return 'Duplicate user found error';
-          });
-          return result;
-       })
-       // Return either the error string of the duplicate user or the user id of the new user
-       return result;
+          .catch(err => 'Failed to create user: ' + err);
       }
     },
     saveQuery: {
