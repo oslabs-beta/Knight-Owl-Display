@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { redirect, Navigate } from 'react-router-dom';
 import { v4 as uuidv4 } from 'uuid';
-import { Button, Dialog, DialogActions, DialogContent, DialogContentText, TextField} from '@mui/material';
+import { Button, ButtonGroup, Dialog, DialogActions, DialogContent, DialogContentText, TextField} from '@mui/material';
 
 // rendered by NavBar when Sign In clicked
 const Auth = (props) => {
@@ -85,14 +85,19 @@ const Auth = (props) => {
 
   return (
     <div className='ON-Auth'>
-      <Button onClick={() => toggleDisplay('logIn')}>Sign In</Button>
-      <Button onClick={() => toggleDisplay('signUp')}>Create New Account</Button>
+      <ButtonGroup variant='text' size='large' sx={{ display: 'grid', gridTemplateColumns: '1fr 1fr' }}>
+        <Button onClick={() => toggleDisplay('logIn')} id='sign-in' disabled={displayState === 'logIn'}>Sign In</Button>
+        <Button onClick={() => toggleDisplay('signUp')} id='sign-up' disabled={displayState === 'signUp'}>Create New Account</Button>
+      </ButtonGroup>
       <br/>
       {(displayState === 'logIn')
       ?
         <form className='ON-log-in-form'>
-          <DialogContent>
+          <DialogContent className='login-content'>
             <TextField 
+              fullWidth
+              variant='standard'
+              margin='normal'
               type='text' 
               id='email' 
               placeholder='Email Address'
@@ -100,6 +105,9 @@ const Auth = (props) => {
             </TextField>
             <br />
             <TextField 
+              fullWidth
+              variant='standard'
+              margin='normal'
               type='password' 
               id='password' 
               placeholder='Password' 
@@ -108,23 +116,59 @@ const Auth = (props) => {
             <br />
           </DialogContent>
           <DialogActions>
-            <Button onClick={sendForms}>Sign In</Button>
+            <Button variant='contained' onClick={sendForms}>Sign In</Button>
           </DialogActions>
         </form>
       :
         <form className='ON-sign-up-form'>
           <DialogContent>
-            <TextField type='text' id='email' placeholder='Email Address' onChange={(e) => trackInputToState(e.target)}></TextField>
+            <TextField 
+              fullWidth
+              variant='standard'
+              margin='normal'
+              type='text' 
+              id='email' 
+              className='auth-input' 
+              placeholder='Email Address' 
+              onChange={(e) => trackInputToState(e.target)}>
+            </TextField>
             <br />
-            <TextField type='password' id='password' placeholder='Password' onChange={(e) => trackInputToState(e.target)}></TextField>
+            <TextField 
+              fullWidth
+              variant='standard'
+              margin='normal'
+              type='password' 
+              id='password' 
+              className='auth-input' 
+              placeholder='Password' 
+              onChange={(e) => trackInputToState(e.target)}>
+            </TextField>
             <br />
-            <TextField type='password' id='confirmPassword' placeholder='Confirm Password' onChange={(e) => trackInputToState(e.target)}></TextField>
+            <TextField
+              fullWidth
+              variant='standard'
+              margin='normal'
+              type='password' 
+              id='confirmPassword' 
+              className='auth-input' 
+              placeholder='Confirm Password' 
+              onChange={(e) => trackInputToState(e.target)}>
+            </TextField>
             <br />
-            <TextField type='text' id='organization' placeholder='Name' onChange={(e) => trackInputToState(e.target)}></TextField>
+            <TextField 
+              fullWidth 
+              variant='standard'
+              margin='normal'
+              type='text' 
+              id='organization' 
+              className='auth-input' 
+              placeholder='Name' 
+              onChange={(e) => trackInputToState(e.target)}>
+            </TextField>
             <br />
           </DialogContent>
           <DialogActions>
-            <Button onClick={sendForms}>Sign Up</Button>
+            <Button variant='contained' onClick={sendForms}>Sign Up</Button>
           </DialogActions>
           {passwordMismatch.mismatch === true &&
           <p className='warn'>Passwords do not match.</p>}

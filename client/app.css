@@ -5,3 +5,11 @@ html {
     font-family: 'Poppins', sans-serif;
     scroll-behavior: smooth;
 }
+
+a {
+    text-decoration: none;
+}
+
+a {
+    color: white;
+}
