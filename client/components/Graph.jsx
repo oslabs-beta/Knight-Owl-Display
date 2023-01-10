@@ -37,6 +37,9 @@ export const options = {
       text: 'Queries Over Time',
     },
   },
+  layout: {
+    padding: 20
+  },
   scales: {
     y: {
       type: 'linear',
@@ -81,26 +84,6 @@ const costLimiterColor = {
 
 
 export function LineGraph(props) {
-  // function organizeDate(stringNum, arr) {
-  //   const date = new Date(Number(stringNum));
-  //   const monthNum = date.getMonth();
-  
-  //   if (monthNum === 0) arr[0]++;
-  //   if (monthNum === 1) arr[1]++;
-  //   if (monthNum === 2) arr[2]++;
-  //   if (monthNum === 3) arr[3]++;
-  //   if (monthNum === 4) arr[4]++;
-  //   if (monthNum === 5) arr[5]++;
-  //   if (monthNum === 6) arr[6]++;
-  //   if (monthNum === 7) arr[7]++;
-  //   if (monthNum === 8) arr[8]++;
-  //   if (monthNum === 9) arr[9]++;
-  //   if (monthNum === 10) arr[10]++;
-  //   if (monthNum === 11) arr[11]++;
-  
-  //   return arr;
-  
-
   const LineGraphData = (fetchedData) => {
     const depthArr = [0,0,0,0,0,0,0,0,0,0,0,0];
     const costArr = [0,0,0,0,0,0,0,0,0,0,0,0];
