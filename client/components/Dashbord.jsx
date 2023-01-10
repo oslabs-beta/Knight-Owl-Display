@@ -53,15 +53,19 @@ export default function Dashboard(props) {
   return (<>
     {signedIn.signedIn === "false" && 
     <Navigate to={'/'} replace={'true'} />}
-    <div style={{display:'flex', justifyContent:'center'}}>
-    <img className='hidden-owl' src={owlUpsideDown} style={{height: '60px'}}/>
-    </div>
+    
     <Grid
       container
       direction='column'
       className='full-dash'
       flexWrap='wrap'
     >
+      <Grid item xs={12} md={12}>
+      <div style={{display:'flex', justifyContent:'center'}}>
+        <img className='hidden-owl' src={owlUpsideDown} style={{height: '45px'}}/>
+      </div>
+
+      </Grid>
       <Grid item xs={12} md={12}>
         <h1>Hi, Welcome Back</h1>
       </Grid>
