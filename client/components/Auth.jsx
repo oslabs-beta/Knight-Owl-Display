@@ -23,7 +23,6 @@ const Auth = (props) => {
     const fieldToUpdate = target.id;
     const passInUpdate = {...fieldEntries};
 
-
     passInUpdate[fieldToUpdate] = target.value;
     updateField(passInUpdate);
   }
@@ -32,7 +31,6 @@ const Auth = (props) => {
   // redirected to navbar
   function sendForms() {
     // sends a mutation request to graphql endpoint on backend
-
     // check if state is current login or signup so that the mutation can be shaped accordingly
     let query, variables;
     if (displayState === 'signUp') {
@@ -76,7 +74,6 @@ const Auth = (props) => {
   }
 
   // Renders either login or signup field depending on current state
-
   return (
     <div className='ON-Auth'>
       <Button onClick={() => toggleDisplay('logIn')}>Sign In</Button>

@@ -1,5 +1,5 @@
 .features-sg {
-  margin-bottom: 10vh;
+  margin-bottom: 5vh;
   font-family: 'Merriweather', 'Open Sans', 'Helvetica Neue', sans-serif;
 }
 
@@ -7,14 +7,17 @@
   font-size: 1.5rem;
   font-weight: 800;
   margin-bottom: 5vh;
+  text-align: center;
 }
 
 .features-point-sg {
   box-shadow: rgba(17, 12, 46, 0.15) 0px 48px 100px 0px;
-  padding: 20px;
-  margin: 20px;
-  min-height: 20vh;
+  padding: 1rem;
+  margin: .5rem;
+  min-height: 15vh;
   border-radius: 20px;
+  font-size: 1rem;
+  min-height: 20vh;
 }
 
 .features-desc-sg {

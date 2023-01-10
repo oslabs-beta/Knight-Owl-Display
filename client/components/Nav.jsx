@@ -12,7 +12,6 @@ const NavBar = () => {
  // use the useState hook to manage state for whether the user is looking at login/auth fields and conditionally render accordingly
  const [open, toggleAuth] = useState(false) // possible values: true or false
 
-
   return (
     <>
       <AppBar>
@@ -23,11 +22,10 @@ const NavBar = () => {
             <Link  style={{ textDecoration: 'none' }} to={'/'}><img className='CE-LogoImage' src={owlLogo} width='50' height='50'/></Link>
           </IconButton>
           <Typography variant='h6' component='div' sx={{flexGrow: 1}}>
-            <Link  style={{ textDecoration: 'none' }} to={'/'}>KNIGHTOWL</Link>
           </Typography>
           <Stack direction='row' spacing={2}>
             <Button color='inherit' onClick={()=>toggleAuth(true)}>Sign In</Button>
-            <Button color='inherit'><Link  style={{ textDecoration: 'none' }} to={'about'}>About The Team</Link></Button>
+            <Button color='inherit'><Link to={'about'} style={{ textDecoration: 'none', color: 'white' }} className="nav-bar-link">Our Team</Link></Button>
             <IconButton>
             <img className='CE-LogoImage' src={npmLogo} width='50' height='50'/>
             </IconButton>
