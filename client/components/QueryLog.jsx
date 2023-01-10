@@ -86,8 +86,13 @@ export default function QueryLog(props) {
   }
 
   return (
-    <Paper sx={{ width: '99%' }} style={{border: 'transparent', height:'100vh'}}>
-      <TableContainer  sx={{ maxHeight: "100vh" }}>
+    <Paper sx={{ width: '99%' }} style={{border: 'transparent', height:'100vh', borderRadius: '20px'}}>
+      <TableContainer  
+        sx={{ maxHeight: "100vh" }} 
+        style={{border: 'transparent', 
+        height:'100vh', 
+        borderRadius: '20px',
+        boxShadow: 'rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px'}}>
         <Table stickyHeader aria-label="sticky table">
           <TableHead>
             <TableRow>

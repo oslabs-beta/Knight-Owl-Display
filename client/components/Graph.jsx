@@ -202,5 +202,5 @@ export function LineGraph(props) {
   };
 
 
-  return <Line className='Graph' options={options} data={data} />;
+  return <Line className='chart' options={options} data={data} />;
 }

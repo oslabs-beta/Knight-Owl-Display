@@ -58,45 +58,45 @@ export default function Dashboard(props) {
     </div>
     <Grid
       container
-      spacing={3}
+      direction='column'
       className='full-dash'
-      direction="row"
-      flexWrap="nowrap"
-      justify="center"
-      >
-        <Grid item xs={7} >
-          <h1>Hi, Welcome Back</h1>
-          <QueryLog queryData={!fetchStatus.fetching ? data : [{queries: {
-            querier_ip_address: 'Loading',
-            query_string: 'Loading',
-            rejected_by: 'Loading',
-            rejected_on: 'Loading'
-          }}]}/>
-        </Grid>
-
-        <Grid item xs={5}>
-          <h1>KO'd Queries Over Time</h1>
-          <Grid
-            container
-            maxWidth="lg"
-            className='full-dash'
-            direction="column"
-            flexWrap="nowrap"
-            justify="center"
-          >
-
-            <Grid item xs={12} >
-              <PieChart queryData={data}/>
-            </Grid>
-            <Grid item xs={12}>
-              {/* Insert dashboard component here */}
-              {/* <BarChart /> */}
-            </Grid>
-            <Grid item xs={12}>
-              <LineGraph queryData={data}></LineGraph>
+      flexWrap='wrap'
+    >
+      <Grid item xs={12} md={12}>
+        <h1>Hi, Welcome Back</h1>
+      </Grid>
+      <Grid
+        container
+        spacing={3}
+        direction="column"
+        flexWrap="nowrap"
+        justify="center"
+        >
+          <Grid item xs={12} md={12}>
+            <Grid
+              container
+              // maxWidth="lg"
+              direction="row"
+              flexWrap="nowrap"
+              justify="center"
+            >
+              <Grid item xs={12} md={4.5}>
+                <PieChart queryData={data}/>
+              </Grid>
+              <Grid item xs={12} md={7.5}>
+                <LineGraph queryData={data}></LineGraph>
+              </Grid>
             </Grid>
           </Grid>
-        </Grid>
+          <Grid item xs={12} md={7} >
+            <QueryLog queryData={!fetchStatus.fetching ? data : [{queries: {
+              querier_ip_address: 'Loading',
+              query_string: 'Loading',
+              rejected_by: 'Loading',
+              rejected_on: 'Loading'
+            }}]}/>
+          </Grid>
+      </Grid>
     </Grid>
   </>)
 };
