@@ -275,6 +275,4 @@ const schema = new GraphQLSchema({
   mutation: RootMutationType,
 })
 
-
-
 module.exports = { schema }
