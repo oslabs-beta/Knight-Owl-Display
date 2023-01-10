@@ -82,7 +82,6 @@ const Auth = (props) => {
   }
 
   // Renders either login or signup field depending on current state
-
   return (
     <div className='ON-Auth'>
       <ButtonGroup variant='text' size='large' sx={{ display: 'grid', gridTemplateColumns: '1fr 1fr' }}>

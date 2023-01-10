@@ -10,7 +10,7 @@ export default function Hero() {
       <img className='hero-logo-sg' src={owlLogo}/>
       <h1 className='hero-tagline-sg'>Give a hoot about protecting your GraphQL queries.</h1>
       <div className='hero-install-sg'>
-        <span className='hero-npm-sg'>npm i knightowl</span><ContentPasteIcon className="hero-npm-paste"/>
+        <span className='hero-npm-sg'>npm i knightowl</span><ContentPasteIcon className="hero-npm-paste" onClick={() => {navigator.clipboard.writeText('npm i knightowl')}}/>
       </div>
         <Button
           color="primary"

@@ -7,7 +7,6 @@ import styles from './app.css';
 const rootDiv = document.getElementById('root');
 const root = createRoot(rootDiv);
 
-
 root.render(
     <React.StrictMode>
         <App />
