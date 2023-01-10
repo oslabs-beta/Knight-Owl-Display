@@ -1,8 +1,6 @@
 import React, { useEffect, useState} from 'react';
 import { Navigate, redirect, useNavigate } from 'react-router-dom';
 import { Grid } from "@mui/material";
-import BarChart from './BarChart.jsx';
-import LineChartEx from './LineChartEx.jsx';
 import { LineGraph } from './Graph.jsx';
 import QueryLog from './QueryLog.jsx';
 import axios from 'axios';
@@ -49,7 +47,6 @@ export default function Dashboard(props) {
     fetchQueries();
   }, []);
 
-  // if (signedIn.signedIn === "true") {
   return (<>
     {signedIn.signedIn === "false" && 
     <Navigate to={'/'} replace={'true'} />}
@@ -79,16 +76,15 @@ export default function Dashboard(props) {
           <Grid item xs={12} md={12}>
             <Grid
               container
-              // maxWidth="lg"
               direction="row"
-              flexWrap="nowrap"
+              flexWrap="wrap"
               justify="center"
             >
               <Grid item xs={12} md={4.5}>
                 <PieChart queryData={data}/>
               </Grid>
               <Grid item xs={12} md={7.5}>
-                <LineGraph queryData={data}></LineGraph>
+                <LineGraph queryData={data} />
               </Grid>
             </Grid>
           </Grid>
