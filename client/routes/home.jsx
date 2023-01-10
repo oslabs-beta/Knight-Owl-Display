@@ -2,6 +2,7 @@ import React from "react";
 import {Link} from 'react-router-dom'
 import { Container, Grid } from "@mui/material";
 import '../app.css';
+import '../styles/auth.css'
 import '../styles/hero.css';
 import '../styles/problem.css';
 import '../styles/features.css';

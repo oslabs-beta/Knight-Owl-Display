@@ -21,7 +21,7 @@ export default function Hero() {
           size="small"
           variant="contained"
           startIcon={<ImportContactsIcon/>}
-        >Install</Button>
+        ><a href="https://www.npmjs.com/package/knightowl">Install</a></Button>
       <p className='hero-tagline-desc-sg'>An easy way to secure all the GraphQL queries hitting your server. Our NPM package contains pre-built middleware functions to handle depth and rate limiting, as well as cost analysis.</p>
     </div>
   )
