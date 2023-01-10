@@ -29,3 +29,9 @@
   font-size: 1.5rem;
   color: rgb(48, 48, 48);
 }
+
+.team-buttons-ce {
+  display: flex;
+  justify-content: center;
+  padding-bottom: 15px;
+}

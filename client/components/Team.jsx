@@ -23,80 +23,91 @@ export default function Team() {
         <div className='team-sg'>
           <img src={caitlinHeadshot} className="team-headshot"/>
           <h2 className='team-name-sg'>Caitlin Ervine</h2>
-          <Button
-          className='linkedin-button-ce'
-          target='_blank' 
-          href='https://www.linkedin.com/in/caitlin-ervine/'
-          startIcon={<LinkedInIcon/>}
-          >
-          </Button>
-          <Button
-          className='github-button-ce'
-          target='_blank' 
-          href='https://github.com/caitlinme24'
-          startIcon={<GitHub/>}
-          >
-          </Button>
+          <div className='team-buttons-ce'>
+            <Button
+            className='linkedin-button-ce'
+            target='_blank' 
+            href='https://www.linkedin.com/in/caitlin-ervine/'
+            startIcon={<LinkedInIcon/>}
+            >
+            </Button>
+            <Button
+            className='github-button-ce'
+            target='_blank' 
+            href='https://github.com/caitlinme24'
+            startIcon={<GitHub/>}
+            >
+            </Button>
+
+          </div>
         </div>
         </Grid>
         <Grid item xs={6}>
         <div className='team-sg'>
           <img src={jacksonHeadshot} className="team-headshot"/>
           <h2 className='team-name-sg'>Jackson Kalmbach</h2>
-          <Button
-          className='linkedin-button-ce'
-          target='_blank' 
-          href='https://www.linkedin.com/in/jacksonkalmbach/'
-          startIcon={<LinkedInIcon/>}
-          >
-          </Button>
-          <Button
-          className='github-button-ce'
-          target='_blank' 
-          href='https://github.com/jacksonkalmbach'
-          startIcon={<GitHub/>}
-          >
-          </Button>
+          <div className='team-buttons-ce'>
+            <Button
+            className='linkedin-button-ce'
+            target='_blank' 
+            href='https://www.linkedin.com/in/jacksonkalmbach/'
+            startIcon={<LinkedInIcon/>}
+            >
+            </Button>
+            <Button
+            className='github-button-ce'
+            target='_blank' 
+            href='https://github.com/jacksonkalmbach'
+            startIcon={<GitHub/>}
+            >
+            </Button>
+          </div>
         </div>
         </Grid>
         <Grid item xs={6}>
         <div className='team-sg'>
           <img src={onaHeadshot} className="team-headshot"/>
           <h2 className='team-name-sg'>Ona Narbutas</h2>
-          <Button
-          className='linkedin-button-ce'
-          target='_blank' 
-          href='https://www.linkedin.com/in/ona-narbutas/'
-          startIcon={<LinkedInIcon/>}
-          >
-          </Button>
-          <Button
-          className='github-button-ce'
-          target='_blank' 
-          href='https://github.com/ona-narbutas'
-          startIcon={<GitHub/>}
-          >
-          </Button>
+          <div className='team-buttons-ce'>
+            <Button
+            className='linkedin-button-ce'
+            target='_blank' 
+            href='https://www.linkedin.com/in/ona-narbutas/'
+            startIcon={<LinkedInIcon/>}
+            >
+            </Button>
+            <Button
+            className='github-button-ce'
+            target='_blank' 
+            href='https://github.com/ona-narbutas'
+            startIcon={<GitHub/>}
+            >
+            </Button>
+
+          </div>
         </div>
         </Grid>
         <Grid item xs={6}>
         <div className='team-sg'>
           <img src={simonHeadshot} className="team-headshot"/>
           <h2 className='team-name-sg'>Simon Grigenas</h2>
-          <Button
-          className='linkedin-button-ce'
-          target='_blank' 
-          href='https://www.linkedin.com/in/simon-grigenas/'
-          startIcon={<LinkedInIcon/>}
-          >
-          </Button>
-          <Button
-          className='github-button-ce'
-          target='_blank' 
-          href='https://github.com/sosasays'
-          startIcon={<GitHub/>}
-          >
-          </Button>
+          <div className='team-buttons-ce'>
+            <Button
+            className='linkedin-button-ce'
+            target='_blank' 
+            href='https://www.linkedin.com/in/simon-grigenas/'
+            startIcon={<LinkedInIcon/>}
+            >
+            </Button>
+            <Button
+            className='github-button-ce'
+            target='_blank' 
+            href='https://github.com/sosasays'
+            startIcon={<GitHub/>}
+            >
+            </Button>
+
+          </div>
         </div>
         </Grid>
       </Grid>
