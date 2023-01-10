@@ -8,6 +8,7 @@
   font-family: 'Merriweather', 'Open Sans', 'Helvetica Neue', sans-serif;
   font-size: 2rem;
   color: rgb(48, 48, 48);
+  
 }
 
 .team-sg {
@@ -19,6 +20,7 @@
     max-width: 15rem;
     max-height: 15rem;
     border-radius: 20px;
+    box-shadow: rgba(0, 0, 0, 0.2) 0px 20px 30px;
 }
 
 .team-name-sg {
@@ -26,4 +28,10 @@
   font-family: 'Merriweather', 'Open Sans', 'Helvetica Neue', sans-serif;
   font-size: 1.5rem;
   color: rgb(48, 48, 48);
+}
+
+.team-buttons-ce {
+  display: flex;
+  justify-content: center;
+  padding-bottom: 15px;
 }
