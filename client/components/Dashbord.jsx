@@ -72,18 +72,18 @@ export default function Dashboard(props) {
         flexWrap="nowrap"
         justify="center"
         >
-          <Grid item xs={12} md={5}>
+          <Grid item xs={12} md={12}>
             <Grid
               container
-              maxWidth="lg"
+              // maxWidth="lg"
               direction="row"
-              flexWrap="wrap"
+              flexWrap="nowrap"
               justify="center"
             >
-              <Grid item xs={12} md={5}>
+              <Grid item xs={12} md={4.5}>
                 <PieChart queryData={data}/>
               </Grid>
-              <Grid item xs={12} md={7}>
+              <Grid item xs={12} md={7.5}>
                 <LineGraph queryData={data}></LineGraph>
               </Grid>
             </Grid>

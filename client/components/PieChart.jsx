@@ -1,8 +1,18 @@
 import React from 'react';
-import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
+import { Chart as ChartJS, ArcElement, Tooltip, Legend, Title } from 'chart.js';
 import { Pie } from 'react-chartjs-2';
 
 ChartJS.register(ArcElement, Tooltip, Legend);
+
+const options = {
+  plugins: {
+    title: {
+      display: true,
+      text: 'Queries By Type',
+    }
+  }
+}
+
 
 const depthLimiterColor = {
   // Currently Green
@@ -57,5 +67,5 @@ export function PieChart(props) {
       },
     ],
   };
-  return <Pie className='chart' data={data} />;
+  return <Pie className='chart' data={data} options={options} />;
 }
