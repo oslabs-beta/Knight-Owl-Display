@@ -62,40 +62,39 @@ export default function Dashboard(props) {
       className='full-dash'
       flexWrap='wrap'
     >
-      <Grid item xs={12}>
+      <Grid item xs={12} md={12}>
         <h1>Hi, Welcome Back</h1>
       </Grid>
       <Grid
         container
         spacing={3}
-        direction="row"
+        direction="column"
         flexWrap="nowrap"
         justify="center"
         >
-          <Grid item xs={7} >
+          <Grid item xs={12} md={5}>
+            <Grid
+              container
+              maxWidth="lg"
+              direction="row"
+              flexWrap="wrap"
+              justify="center"
+            >
+              <Grid item xs={12} md={5}>
+                <PieChart queryData={data}/>
+              </Grid>
+              <Grid item xs={12} md={7}>
+                <LineGraph queryData={data}></LineGraph>
+              </Grid>
+            </Grid>
+          </Grid>
+          <Grid item xs={12} md={7} >
             <QueryLog queryData={!fetchStatus.fetching ? data : [{queries: {
               querier_ip_address: 'Loading',
               query_string: 'Loading',
               rejected_by: 'Loading',
               rejected_on: 'Loading'
             }}]}/>
-          </Grid>
-          <Grid item xs={5}>
-            {/* <h1>KO'd Queries Over Time</h1> */}
-            <Grid
-              container
-              maxWidth="lg"
-              direction="column"
-              flexWrap="nowrap"
-              justify="center"
-            >
-              <Grid item xs={6} >
-                <PieChart queryData={data}/>
-              </Grid>
-              <Grid item xs={6}>
-                <LineGraph queryData={data}></LineGraph>
-              </Grid>
-            </Grid>
           </Grid>
       </Grid>
     </Grid>
