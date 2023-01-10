@@ -27,10 +27,10 @@ const NavBar = () => {
             <Button color='inherit' onClick={()=>toggleAuth(true)}>Sign In</Button>
             <Button color='inherit'><Link to={'about'} style={{ textDecoration: 'none', color: 'white' }} className="nav-bar-link">Our Team</Link></Button>
             <IconButton>
-            <img className='CE-LogoImage' src={npmLogo} width='50' height='50'/>
+              <a href="https://www.npmjs.com/package/knightowl"><img className='CE-LogoImage' src={npmLogo} width='50' height='50'/></a>
             </IconButton>
             <IconButton>
-              <GitHubIcon/>
+              <a href="https://github.com/oslabs-beta/Knight-Owl-Display"><GitHubIcon/></a>
             </IconButton>
           </Stack>
         </Toolbar>

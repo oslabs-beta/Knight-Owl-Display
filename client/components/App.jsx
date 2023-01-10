@@ -8,6 +8,7 @@ import '../styles/features.css';
 import '../styles/dashboard.css';
 import '../styles/techStack.css';
 import '../styles/team.css';
+import '../styles/auth.css'
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 
 // Component imports
