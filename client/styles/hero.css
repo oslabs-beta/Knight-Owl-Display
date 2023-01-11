@@ -52,3 +52,9 @@
   cursor: pointer;
   color: rgb(106, 106, 106);
 }
+
+@media only screen and (max-width: 600px) {
+  .hero-sg {
+    margin-left: 7vh;
+  }
+}

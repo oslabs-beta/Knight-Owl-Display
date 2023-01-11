@@ -7,8 +7,7 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
-
-
+import { v4 as uuidv4 } from 'uuid';
 
 const columns = [
   { id: 'date', label: 'Date', minWidth: 170 },
@@ -44,9 +43,7 @@ function createData(date, querystring, ip, limiter) {
   };
   
   return { date, querystring, ip, name, color };
-}
-
-
+};
 
 export default function QueryLog(props) {
   const rows = [];
@@ -117,7 +114,7 @@ export default function QueryLog(props) {
               .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
               .map((row) => {
                 return (
-                  <TableRow hover role="checkbox" tabIndex={-1} key={row.date}>
+                  <TableRow hover role="checkbox" tabIndex={-1} key={uuidv4()}>
                     <TableCell component="th" scope="row">
                       {row.date}
                     </TableCell>

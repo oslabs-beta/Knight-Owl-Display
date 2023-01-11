@@ -10,7 +10,6 @@ module.exports = async (req, res, next) => {
         'signedIn': true
       })
     } catch (err) {
-      console.log('token error: ', err)
       res.locals.signedIn = false;
       res.set({
         'signedIn' : false,

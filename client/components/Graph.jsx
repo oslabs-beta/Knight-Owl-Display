@@ -22,7 +22,6 @@ ChartJS.register(
   Legend
 );
 
-
 export const options = {
   responsive: true,
   maintainAspectRatio: false,
@@ -59,7 +58,6 @@ export const options = {
 
 const labels = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 
-
 const depthLimiterColor = {
   // Currently Green
   background: 'rgba(75, 192, 192, 0.2)',
@@ -79,20 +77,15 @@ const costLimiterColor = {
   border: 'rgba(255, 99, 132, 1)',
 };
 
-
-
-
-
 export function LineGraph(props) {
+ 
   const LineGraphData = (fetchedData) => {
     const depthArr = [0,0,0,0,0,0,0,0,0,0,0,0];
     const costArr = [0,0,0,0,0,0,0,0,0,0,0,0];
     const rateArr = [0,0,0,0,0,0,0,0,0,0,0,0];
     
-    console.log(fetchedData);
     fetchedData.queries.forEach(query => {
       if (query.rejected_by === 'depth_limiter') {
-        
         
         const date = new Date(Number(query.rejected_on));
         const monthNum = date.getMonth();
@@ -149,14 +142,9 @@ export function LineGraph(props) {
       };
 
     });
-    
     return [depthArr, rateArr, costArr];
-
   };
   
-
-
-
   const data = {
     labels,
     datasets: [
@@ -183,7 +171,6 @@ export function LineGraph(props) {
       },
     ],
   };
-
 
   return <Line className='chart' options={options} data={data} />;
 }

@@ -2,7 +2,6 @@ const express = require('express');
 const path = require('path');
 const app = express();
 const { graphqlHTTP } = require('express-graphql');
-// const { knightOwl } = require('knightowl');
 const PORT = process.env.PORT || 3000;
 
 const cookieParser = require('cookie-parser')
@@ -14,10 +13,7 @@ const authenticate = require('./controllers/authenticate.js');
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
-
-// if (process.env.NODE_ENV === "production") {
 app.use('/build', express.static(path.join(__dirname, '../build')));
-// }
 
 // GraphQL endpoint
 app.use('/graphql', authenticate, graphqlHTTP({
@@ -28,7 +24,6 @@ app.use('/graphql', authenticate, graphqlHTTP({
 app.get('*', authenticate, (req, res) => {
   return res.status(200).sendFile(path.join(__dirname, '../index.html'));
 });
-
 
 // 404 Handler
 app.use('*', (req, res) => {

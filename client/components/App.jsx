@@ -18,7 +18,7 @@ import NavBar from "./Nav.jsx";
 import Problem from "./Problem.jsx";
 import Team from "./Team.jsx";
 import TechStack from "./TechStack.jsx";
-import Dashboard from "./Dashbord.jsx";
+import Dashboard from "./Dashboard.jsx";
 import Home from '../routes/home.jsx'
 import DashPage from "../routes/dashPage.jsx";
 import About from "../routes/about.jsx";

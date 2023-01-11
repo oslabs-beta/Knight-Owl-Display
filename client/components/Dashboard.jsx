@@ -33,7 +33,6 @@ export default function Dashboard(props) {
         '/graphql', {
           query: GET_QUERIES
       }).then(response => {
-        console.log('response headers: ', response.headers)
         setSignedIn({signedIn: response.headers.signedin});
         // Update the state to hold all the bad queries related to the specific user profile.
         // console.log('signin state: ', 'test')
@@ -83,7 +82,7 @@ export default function Dashboard(props) {
               <Grid item xs={12} md={4.5}>
                 <PieChart queryData={data}/>
               </Grid>
-              <Grid item xs={12} md={7.5}>
+              <Grid item xs={12} md={7.5} className='linegraph'>
                 <LineGraph queryData={data} />
               </Grid>
             </Grid>

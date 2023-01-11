@@ -36,9 +36,7 @@ export default function Team() {
             target='_blank' 
             href='https://github.com/caitlinme24'
             startIcon={<GitHub/>}
-            >
-            </Button>
-
+            ></Button>
           </div>
         </div>
         </Grid>
@@ -59,8 +57,7 @@ export default function Team() {
             target='_blank' 
             href='https://github.com/jacksonkalmbach'
             startIcon={<GitHub/>}
-            >
-            </Button>
+            ></Button>
           </div>
         </div>
         </Grid>
@@ -81,9 +78,7 @@ export default function Team() {
             target='_blank' 
             href='https://github.com/ona-narbutas'
             startIcon={<GitHub/>}
-            >
-            </Button>
-
+            ></Button>
           </div>
         </div>
         </Grid>
@@ -104,9 +99,7 @@ export default function Team() {
             target='_blank' 
             href='https://github.com/sosasays'
             startIcon={<GitHub/>}
-            >
-            </Button>
-
+            ></Button>
           </div>
         </div>
         </Grid>
