@@ -1,6 +1,6 @@
 # Knight Owl Web Application
 ![](/public/knightowlbanner.png)
-An easy way to secure all the GraphQL queries hitting your espress.js server. Our NPM package contains pre-built middleware functions to handle depth and rate limiting, as well as cost analysis.
+An easy way to secure your APIs built on `express-graphql` servers. Our NPM package contains pre-built middleware functions to handle depth and rate limiting, as well as cost analysis.
 
 # Installation and Getting Started
 `npm i knightowl` to install our middleware library into your project! <br />
@@ -8,7 +8,9 @@ An easy way to secure all the GraphQL queries hitting your espress.js server. Ou
 You can read more about how to get started from the middleware library repository [here](https://github.com/oslabs-beta/KnightOwl) <br />
 
 To get full use of the Knight Owl Visualization tool, check out our full stack web application and make an account with us. <br />
-See our website to get started: [KnightOwl.app](https://knightowl.app/) <br /> <br />
+(Please make a note of the email and password you use to signup!) <br />
+
+See our website to get started: [knightowl.app](https://knightowl.app/) <br /> <br />
 
 
 # The Knight Owl Team
