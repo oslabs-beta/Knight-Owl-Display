@@ -19,13 +19,13 @@ const NavBar = () => {
           backgroundColor: "#dfc1ae",
         }}>
           <IconButton>
-            <Link  style={{ textDecoration: 'none' }} to={'/'}><img className='CE-LogoImage' src={owlLogo} width='50' height='50'/></Link>
+            <Link exact style={{ textDecoration: 'none' }} to={'/'}><img className='CE-LogoImage' src={owlLogo} width='50' height='50'/></Link>
           </IconButton>
           <Typography variant='h6' component='div' sx={{flexGrow: 1}}>
           </Typography>
           <Stack direction='row' spacing={2}>
             <Button color='inherit' onClick={()=>toggleAuth(true)}>Sign In</Button>
-            <Button color='inherit'><Link to={'about'} className="nav-bar-link">Our Team</Link></Button>
+            <Button color='inherit'><Link to={'/about'} className="nav-bar-link">Our Team</Link></Button>
             <IconButton>
               <a href="https://www.npmjs.com/package/knightowl"><img className='CE-LogoImage' src={npmLogo} width='50' height='50'/></a>
             </IconButton>
