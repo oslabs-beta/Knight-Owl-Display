@@ -25,7 +25,7 @@ const NavBar = () => {
           </Typography>
           <Stack direction='row' spacing={2}>
             <Button color='inherit' onClick={()=>toggleAuth(true)}>Sign In</Button>
-            <Button color='inherit'><Link to={'/about'} className="nav-bar-link">Our Team</Link></Button>
+            <Button component={Link} color='inherit' to={'/about'} className="nav-bar-link">Our Team</Button>
             <IconButton>
               <a href="https://www.npmjs.com/package/knightowl"><img className='CE-LogoImage' src={npmLogo} width='50' height='50'/></a>
             </IconButton>
