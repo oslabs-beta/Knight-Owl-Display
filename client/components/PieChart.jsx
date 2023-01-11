@@ -25,14 +25,14 @@ const depthLimiterColor = {
 
 const rateLimiterColor =  {
   // Currently Blue
-  background: 'rgba(255, 99, 132, 0.2)',
-  border: 'rgba(255, 99, 132, 1)',
+  background: 'rgba(54, 162, 235, 0.2)',
+  border: 'rgba(54, 162, 235, 1)',
 };
 
 const costLimiterColor = {
   // Currently Red
-  background: 'rgba(54, 162, 235, 0.2)',
-  border: 'rgba(54, 162, 235, 1)',
+  background: 'rgba(255, 99, 132, 0.2)',
+  border: 'rgba(255, 99, 132, 1)',
 };
 
 export function PieChart(props) {
@@ -47,7 +47,7 @@ export function PieChart(props) {
     };
   
   const data = {
-    labels: ['Depth Limiter', 'Cost Limiter', 'Rate Limiter'],
+    labels: ['Depth Limiter', 'Rate Limiter', 'Cost Limiter'],
     datasets: [
       {
         label: 'Bounced Queries by Limiter',
