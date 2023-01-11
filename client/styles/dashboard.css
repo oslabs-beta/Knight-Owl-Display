@@ -48,3 +48,9 @@ h1 {
   justify-content: left;
   margin-left: 20px;
 }
+
+@media (min-width: 600px) {
+  .chart {
+    display: none;
+  }
+}
