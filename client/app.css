@@ -10,3 +10,7 @@ a {
     text-decoration: none;
     color: white;
 }
+
+body {
+    width: 100vw;
+}

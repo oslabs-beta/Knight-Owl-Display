@@ -48,9 +48,3 @@ h1 {
   justify-content: left;
   margin-left: 20px;
 }
-
-@media only screen and (max-width: 600px) {
-  .linegraph {
-    display: none;
-  }
-}

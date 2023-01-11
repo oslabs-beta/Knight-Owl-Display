@@ -5,9 +5,3 @@
   font-size: 2rem;
    color: rgb(48, 48, 48);
 }
-
-@media only screen and (max-width: 600px) {
-  .tech-container-sg {
-    margin-left: 7vh;
-  }
-}
