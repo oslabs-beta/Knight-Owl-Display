@@ -160,14 +160,14 @@ export function LineGraph(props) {
         data: LineGraphData(props.queryData)[1],
         borderColor: rateLimiterColor.border,
         backgroundColor: rateLimiterColor.background,
-        yAxisID: 'y1',
+        yAxisID: 'y',
       },
       {
         label: 'Cost Limiter',
         data: LineGraphData(props.queryData)[2],
         borderColor: costLimiterColor.border,
         backgroundColor: costLimiterColor.background,
-        yAxisID: 'y1',
+        yAxisID: 'y',
       },
     ],
   };
