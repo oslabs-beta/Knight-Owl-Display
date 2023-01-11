@@ -40,15 +40,10 @@ export const options = {
     padding: 20
   },
   scales: {
-    y: {
+    y1: {
       type: 'linear',
       display: true,
       position: 'left',
-    },
-    y1: {
-      type: 'linear',
-      display: false,
-      position: 'right',
       grid: {
         drawOnChartArea: false,
       },
@@ -153,7 +148,7 @@ export function LineGraph(props) {
         data: LineGraphData(props.queryData)[0],
         borderColor: depthLimiterColor.border,
         backgroundColor: depthLimiterColor.background,
-        yAxisID: 'y',
+        yAxisID: 'y1',
       },
       {
         label: 'Rate Limiter',
@@ -172,5 +167,5 @@ export function LineGraph(props) {
     ],
   };
 
-  return <Line className='chart' options={options} data={data} />;
+  return <Line className='chart' data={data} options={options} />;
 }
