@@ -83,7 +83,7 @@ export default function Dashboard(props) {
                 <PieChart queryData={data}/>
               </Grid>
               <Grid item xs={12} md={7.5} className='linegraph'>
-                <LineGraph queryData={data} />
+                <LineGraph queryData={data}/>
               </Grid>
             </Grid>
           </Grid>

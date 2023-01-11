@@ -10,3 +10,13 @@ a {
     text-decoration: none;
     color: white;
 }
+
+body {
+    width: 100vw;
+}
+
+@media (max-width: 600px) {
+  .linegraph {
+    display: none;
+  }
+}

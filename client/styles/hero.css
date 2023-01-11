@@ -15,7 +15,7 @@
 }
 
 .hero-tagline-sg {
-  font-size: 3rem;
+  font-size: 2.7rem;
   text-align: center;
 }
 
@@ -51,10 +51,4 @@
 .hero-npm-paste:hover {
   cursor: pointer;
   color: rgb(106, 106, 106);
-}
-
-@media only screen and (max-width: 600px) {
-  .hero-sg {
-    margin-left: 7vh;
-  }
 }
