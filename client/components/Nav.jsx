@@ -19,7 +19,7 @@ const NavBar = () => {
           backgroundColor: "#dfc1ae",
         }}>
           <IconButton>
-            <Link exact style={{ textDecoration: 'none' }} to={'/'}><img className='CE-LogoImage' src={owlLogo} width='50' height='50'/></Link>
+            <Link style={{ textDecoration: 'none' }} to={'/'}><img className='CE-LogoImage' src={owlLogo} width='50' height='50'/></Link>
           </IconButton>
           <Typography variant='h6' component='div' sx={{flexGrow: 1}}>
           </Typography>

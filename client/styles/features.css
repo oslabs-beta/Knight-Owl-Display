@@ -23,9 +23,3 @@
 .features-desc-sg {
   color: rgb(62, 62, 62);
 }
-
-@media only screen and (max-width: 600px) {
-  .features-sg {
-    margin-left: 7vh;
-  }
-}

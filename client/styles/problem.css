@@ -18,9 +18,3 @@
   text-align: center;
   font-weight: 400;
 }
-
-@media only screen and (max-width: 600px) {
-  .problem-sg {
-    margin-left: 6.5vh;
-  }
-}
