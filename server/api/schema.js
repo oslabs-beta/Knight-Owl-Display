@@ -36,7 +36,7 @@ const VerifiedUserType = new GraphQLObjectType({
     id: { type: GraphQLID},
     token: { type: GraphQLID }
   })
-})
+});
 
 const MiddlewareType = new GraphQLObjectType({
   name: 'Middleware',
@@ -45,7 +45,7 @@ const MiddlewareType = new GraphQLObjectType({
     id: { type: GraphQLID },
     name: { type: GraphQLString },
   })
-})
+});
 
 const BadQueryType = new GraphQLObjectType({
   name: 'BadQuery',
@@ -58,7 +58,7 @@ const BadQueryType = new GraphQLObjectType({
     rejected_on: { type: GraphQLString },
     user_id: { type: GraphQLID },
   })
-})
+});
 
 const BatchQueryInputType = new GraphQLInputObjectType({
   name: 'BatchQueryInput',
@@ -68,7 +68,7 @@ const BatchQueryInputType = new GraphQLInputObjectType({
     rejected_by: { type: GraphQLString },
     rejected_on: { type: GraphQLString },
   })
-})
+});
 
 const RootQueryType = new GraphQLObjectType({
   name: 'Query',
@@ -129,20 +129,8 @@ const RootQueryType = new GraphQLObjectType({
         }
       }
     },
-    // Probably won't need separate query for specific middleware
-    // middlewareQueries: {
-    //   type: new GraphQLList(BadQueryType),
-    //   description: 'Retrieves a list of queries rejected by a given Knight Owl middleware function and associated with current user',
-    //   args: {
-    //     userID: { type: GraphQLID },
-    //     middlewareFunc: { type: GraphQLString }
-    //   },  
-    //   resolve: (parent, args) => {
-    //     return badQueries.filter(badQuery => badQuery.rejectedBy === args.middlewareFunc && badQuery.userID === args.userID)
-    //   }
-    // }
   })
-})
+});
 
 const RootMutationType = new GraphQLObjectType({
   name: 'Mutation',
@@ -248,11 +236,11 @@ const RootMutationType = new GraphQLObjectType({
       }
     }
   })
-})
+});
 
 const schema = new GraphQLSchema({
   query: RootQueryType,
   mutation: RootMutationType,
-})
+});
 
-module.exports = { schema }
+module.exports = { schema };
